@@ -1,7 +1,7 @@
 import { useDrawing } from '../hooks/useDrawing'
 
 function Dibujo2D() {
-  const { canvasRef, startDrawing, draw, stopDrawing, setShape, setColor, color } = useDrawing();
+  const { canvasRef, startDrawing, draw, stopDrawing, setShape, setColor, color, shape, setSides, sides } = useDrawing();
 
   return (
     <div>
@@ -19,11 +19,33 @@ function Dibujo2D() {
       />
       <div>
           <button className="bg-blue-500 rounded-md" onClick={() => setShape("line")}>Line</button>
-          <button onClick={() => setShape("rectangle")}>Rectangule</button>
-          <button onClick={() => setShape("line")}>Libre</button>
         <button onClick={() => setShape("straight-line")}>Línea Recta</button>
         <button onClick={() => setShape("rectangle")}>Rectángulo</button>
         <button onClick={() => setShape("circle")}>Círculo</button>
+        <button 
+          onClick={() => setShape("triangle")}>
+          Triangle
+        </button>
+        <button 
+          onClick={() => setShape("ellipse")}>
+          Ellipse
+        </button>
+        <button 
+          onClick={() => setShape("polygon")}>
+          Polygon
+        </button>
+
+        {shape === "polygon" && (
+          <div>
+            <label>Number of sides: </label>
+            <input 
+              type="number" 
+              value={sides} 
+              onChange={(e) => setSides(Number(e.target.value))} 
+              min={3}
+            />
+          </div>
+        )}
           <input
             type="color"
             value={color}
