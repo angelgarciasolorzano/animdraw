@@ -1,10 +1,13 @@
 import { useDrawing } from '../hooks/useDrawing'
 
 function Dibujo2D() {
-  const { canvasRef, startDrawing, draw, stopDrawing, setShape, setColor, color, shape, setSides, sides } = useDrawing();
+  const { 
+    canvasRef, startDrawing, draw, stopDrawing, setShape, setColor, color, 
+    shape, setSides, sides 
+  } = useDrawing();
 
   return (
-    <div>
+    <div className=''>
       <canvas
         ref={canvasRef}
         width={500}
@@ -17,20 +20,20 @@ function Dibujo2D() {
           border: "1px solid black",
         }}
       />
-      <div>
-          <button className="bg-blue-500 rounded-md" onClick={() => setShape("line")}>Line</button>
-        <button onClick={() => setShape("straight-line")}>Línea Recta</button>
-        <button onClick={() => setShape("rectangle")}>Rectángulo</button>
-        <button onClick={() => setShape("circle")}>Círculo</button>
-        <button 
+      <div className='flex gap-4 mt-4'>
+        <button className="border rounded-md p-2" onClick={() => setShape("line")}>Line</button>
+        <button className="border rounded-md p-2" onClick={() => setShape("straight-line")}>Línea Recta</button>
+        <button className="border rounded-md p-2" onClick={() => setShape("rectangle")}>Rectángulo</button>
+        <button className="border rounded-md p-2" onClick={() => setShape("circle")}>Círculo</button>
+        <button className="border rounded-md p-2"
           onClick={() => setShape("triangle")}>
           Triangle
         </button>
-        <button 
+        <button className="border rounded-md p-2"
           onClick={() => setShape("ellipse")}>
           Ellipse
         </button>
-        <button 
+        <button className="border rounded-md p-2"
           onClick={() => setShape("polygon")}>
           Polygon
         </button>
@@ -50,9 +53,11 @@ function Dibujo2D() {
             type="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
+            className='border rounded-md p-2'
           />
 
           <button
+            className='border rounded-md p-2'
             onClick={() => {
               const canvas = canvasRef.current;
               if (!canvas) return;
@@ -63,7 +68,7 @@ function Dibujo2D() {
           >
             Limpiar
           </button>
-        </div>
+      </div>
     </div>
   )
 }
