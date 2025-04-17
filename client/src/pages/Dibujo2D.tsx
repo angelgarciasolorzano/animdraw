@@ -1,3 +1,4 @@
+import Lienzo from '../components/Lienzo';
 import { useDrawing } from '../hooks/useDrawing'
 
 function Dibujo2D() {
@@ -69,6 +70,8 @@ function Dibujo2D() {
             Limpiar
           </button>
       </div>
+
+      <Lienzo />
     </div>
   )
 }
