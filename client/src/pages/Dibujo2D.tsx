@@ -1,4 +1,4 @@
-import Lienzo from '../components/Lienzo';
+import Lienzo from '../components/ShapeCanvas';
 import { useDrawing } from '../hooks/useDrawing'
 
 function Dibujo2D() {
