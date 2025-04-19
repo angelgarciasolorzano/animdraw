@@ -1,8 +1,10 @@
-import { useState, useMemo, useEffect } from "react";
 import { Stage, Layer } from "react-konva";
 import ShapeWithAnchors from "./ShapeWithAnchors";
 import ConnectionLine from "./ConnectionLine";
-import { ShapeData, Connection, AnchorPoint } from "../types/shapeData";
+import { ShapeData, AnchorPoint } from "../types/shapeData";
+import useShapes from "../hooks/useShapes";
+import useConnections from "../hooks/useConnections";
+import useSelectedShape from "../hooks/useSelectedShape";
 
 const createAnchors = (shapeId: string, x: number, y: number, width: number, height: number): AnchorPoint[] => [
   { id: `${shapeId}-top`, x: x + width / 2, y: y, shapeId },
@@ -41,75 +43,22 @@ const INITIAL_SHAPES: ShapeData[] = [
 ];
 
 export const ShapesCanvas = () => {
-  const [shapes, setShapes] = useState<ShapeData[]>(INITIAL_SHAPES);
-  const [connections, setConnections] = useState<Connection[]>([]);
-  const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null);
-  const [selectedAnchorId, setSelectedAnchorId] = useState<string | null>(null);
-  const [pendingAnchorId, setPendingAnchorId] = useState<string | null>(null);
-  const [shapeTextInput, setShapeTextInput] = useState<string | null>(null);
+  const { shapes, updateShapeAttributes, updateShapeText } = useShapes(INITIAL_SHAPES);
 
-  console.log(selectedAnchorId);
+  const { 
+    selectedShapeId, shapeTextInput, 
+    updateText, onSelectShape, ofSelectShape 
+  } = useSelectedShape({ shapes });
 
-  // Mapa de anclajes para fácil acceso por ID
-  const allAnchors = useMemo(() => {
-    const anchors: Record<string, AnchorPoint> = {};
-    shapes.forEach(shape => {
-      shape.anchors.forEach(anchor => {
-        anchors[anchor.id] = anchor;
-      });
-    });
-    return anchors;
-  }, [shapes]);
+  const { 
+    connections, selectedAnchorId, allAnchors, 
+    handleSelectAnchor, ofSelectAnchor 
+  } = useConnections({ shapes, onSelectShapeId: onSelectShape });
 
-  // Sincroniza el texto al seleccionar una figura
-  useEffect(() => {
-    if (selectedShapeId) {
-      const shape = shapes.find(s => s.id === selectedShapeId);
-      setShapeTextInput(shape?.text || "");
-    }
-  }, [selectedShapeId, shapes]);
-
-  //* Maneja la selección de anclajes y creación de conexiones
-  const handleSelectAnchor = (anchorId: string) => {
-    const anchor = allAnchors[anchorId];
-
-    if (!anchor) return;
-
-    if (pendingAnchorId) {
-      const newConnection: Connection = {
-        id: `conn-${pendingAnchorId}-${anchorId}-${Date.now()}`,
-        fromAnchor: pendingAnchorId,
-        toAnchor: anchorId,
-        stroke: "#4b5563",
-        strokeWidth: 2,
-      };
-      setConnections(prev => [...prev, newConnection]);
-      setPendingAnchorId(null);
-      setSelectedAnchorId(null);
-      setSelectedShapeId(null);
-    } else {
-      setSelectedShapeId(anchor.shapeId);
-      setPendingAnchorId(anchorId);
-      setSelectedAnchorId(anchorId);
-    }
-  };
-  
-  // Aplica el texto editado a la figura seleccionada
-  const updateShapeText = () => {
-    if (!selectedShapeId || shapeTextInput === null) return;
-    
-    setShapes(prev =>
-      prev.map(shape =>
-        shape.id === selectedShapeId ? { ...shape, text: shapeTextInput } : shape
-      )
-    );
-  };
-
-  // Actualiza la posición y tamaño de una figura
-  const handleShapeDrag = (shapeId: string, newAttrs: Partial<ShapeData>) => {
-    setShapes(prev => prev.map(shape => 
-      shape.id === shapeId ? { ...shape, ...newAttrs } : shape
-    ));
+  const handleApplyText = () => {
+    if (selectedShapeId && shapeTextInput !== null) {
+      updateShapeText(selectedShapeId, shapeTextInput);
+    };
   };
 
   return (
@@ -128,7 +77,7 @@ export const ShapesCanvas = () => {
                 className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 value={shapeTextInput ?? ""}
                 onChange={(e) => {
-                  setShapeTextInput(e.target.value);
+                  updateText(e.target.value);
                 }}
                 rows={4}
                 autoFocus
@@ -137,15 +86,15 @@ export const ShapesCanvas = () => {
             <div className="flex space-x-2">
               <button
                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-                onClick={updateShapeText}
+                onClick={handleApplyText}
               >
                 Aplicar
               </button>
               <button
                 className="bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
                 onClick={() => {
-                  setSelectedShapeId(null);
-                  setSelectedAnchorId(null);
+                  ofSelectShape();
+                  ofSelectAnchor();
                 }}
               >
                 Cancelar
@@ -166,8 +115,8 @@ export const ShapesCanvas = () => {
           height={window.innerHeight}
           onClick={(e) => {
             if (e.target === e.target.getStage()) {
-              setSelectedShapeId(null);
-              setSelectedAnchorId(null);
+              ofSelectShape();
+              ofSelectAnchor();
             }
           }}
         >
@@ -197,10 +146,10 @@ export const ShapesCanvas = () => {
                 isSelected={selectedShapeId === shape.id}
                 selectedAnchorId={selectedAnchorId}
                 onSelectAnchor={handleSelectAnchor}
-                onDragEnd={(newAttrs) => handleShapeDrag(shape.id, newAttrs)}
+                onDragEnd={(newAttrs) => updateShapeAttributes(shape.id, newAttrs)}
                 onSelectShape={() => {
-                  setSelectedShapeId(shape.id);
-                  setSelectedAnchorId(null);
+                  onSelectShape(shape.id);
+                  ofSelectAnchor();
                 }}
               />
             ))}
