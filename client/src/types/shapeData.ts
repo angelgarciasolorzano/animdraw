@@ -3,7 +3,7 @@ export interface AnchorPoint {
   x: number;
   y: number;
   shapeId: string;
-}
+};
 
 export interface ShapeData {
   id: string;
@@ -18,7 +18,7 @@ export interface ShapeData {
   text: string;
   rotation?: number;
   anchors: AnchorPoint[];
-}
+};
 
 export interface Connection {
   id: string;
@@ -26,4 +26,4 @@ export interface Connection {
   toAnchor: string;
   stroke?: string;
   strokeWidth?: number;
-}
+};
