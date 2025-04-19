@@ -1,9 +1,7 @@
-import { useRef, useEffect, useState } from "react";
 import { Group, Rect, Ellipse, Text } from "react-konva";
 import { ShapeData } from "../types/shapeData";
 import AnchorPoint from "./AnchorPoint";
-
-import Konva from "konva";
+import useShapeInteraction from "../hooks/useShapeInteraction";
 
 interface ShapeWithAnchorsProps {
   shape: ShapeData;
@@ -15,81 +13,15 @@ interface ShapeWithAnchorsProps {
 };
 
 function ShapeWithAnchors(props: ShapeWithAnchorsProps) {
-  const { shape, isSelected, selectedAnchorId, onSelectShape, onSelectAnchor, onDragEnd } = props;
-  const [isHovered, setIsHovered] = useState(false);
+  const { 
+    shape, isSelected, selectedAnchorId, 
+    onSelectShape, onSelectAnchor, onDragEnd 
+  } = props;
   
-  const shapeGroupRef = useRef<Konva.Group | null>(null);
-  const transformerRef = useRef<Konva.Transformer | null>(null);
-
-  //* Se ejecuta cuando se selecciona una figura.
-  //* Si está seleccionada, asocia el Transformer para habilitar redimensionamiento.
-  useEffect(() => {
-    if (isSelected && transformerRef.current && shapeGroupRef.current) {
-      transformerRef.current.nodes([shapeGroupRef.current]);
-      transformerRef.current.getLayer()?.batchDraw();
-    }
-  }, [isSelected]);
-
-  //* Maneja el final del arrastre de la figura.
-  //* Actualiza posición y tamaño, y ajusta la posición de los puntos de anclaje.
-  const handleDragEnd = () => {
-    const groupNode = shapeGroupRef.current;
-
-    if (!groupNode) return;
-
-    const scaleX = groupNode.scaleX();
-    const scaleY = groupNode.scaleY();
-
-    //* Calculamos desplazamiento
-    const dx = groupNode.x() - shape.x;
-    const dy = groupNode.y() - shape.y;
-
-    //* Actualizamos posición de los anclajes
-    const updatedAnchors = shape.anchors.map(anchor => ({
-      ...anchor,
-      x: anchor.x + dx,
-      y: anchor.y + dy,
-    }));
-
-    onDragEnd({
-      x: groupNode.x(),
-      y: groupNode.y(),
-      width: Math.max(5, shape.width * scaleX),
-      height: Math.max(5, shape.height * scaleY),
-      anchors: updatedAnchors,
-    });
-
-    //* Reseteamos la transformación
-    groupNode.scaleX(1);
-    groupNode.scaleY(1);
-  };
-
-  //* Se ejecuta durante el arrastre de la figura (en tiempo real).
-  //* Permite que las conexiones se actualicen dinámicamente junto con los anclajes.
-  const handleDragMove = () => {
-    const groupNode = shapeGroupRef.current;
-
-    if (!groupNode) return;
-
-    const dx = groupNode.x() - shape.x;
-    const dy = groupNode.y() - shape.y;
-  
-    const updatedAnchors = shape.anchors.map(anchor => ({
-      ...anchor,
-      x: anchor.x + dx,
-      y: anchor.y + dy,
-    }));
-  
-    //* Emitimos en tiempo real para actualizar conexiones
-    onDragEnd({
-      x: groupNode.x(),
-      y: groupNode.y(),
-      width: shape.width,
-      height: shape.height,
-      anchors: updatedAnchors,
-    });
-  };
-  
+  const {
+    isHovered, shapeGroupRef, 
+    updateHovered, handleDragEnd, handleDragMove
+  } = useShapeInteraction({ shape, isSelected, onDragEnd });
 
   return (
     <Group>
@@ -105,8 +37,10 @@ function ShapeWithAnchors(props: ShapeWithAnchorsProps) {
         onTap={onSelectShape}
         onDragEnd={handleDragEnd}
         onDragMove={handleDragMove}
-        onMouseEnter={() => setIsHovered(true)} //* Al hacer hover, se activan los puntos de anclaje
-        onMouseLeave={() => setIsHovered(false)} //* Al dejar de hover, se desactivan los puntos de anclaje
+        //onMouseEnter={() => setIsHovered(true)} //* Al hacer hover, se activan los puntos de anclaje
+        //onMouseLeave={() => setIsHovered(false)} //* Al dejar de hover, se desactivan los puntos de anclaje
+        onMouseEnter={() => updateHovered(true)}
+        onMouseLeave={() => updateHovered(false)}
       >
         {/*Renderización de la figura según su tipo*/}
 
