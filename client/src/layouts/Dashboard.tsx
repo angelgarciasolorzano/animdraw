@@ -2,8 +2,8 @@
 //import Dibujo2D from "../pages/Dibujo2D";
 import Content from "../components/Content";
 import Header from "../components/Header";
-import SidebarLeft from "../components/SidebarLeft";
-import SidebarRight from "../components/SidebarRight";
+import SidebarLeft from "../components/sidebar/sidebarleft/SidebarLeft";
+import SidebarRight from "../components/sidebar/sidebarRight/SidebarRight";
 
 function Dashboard() {
   return (
