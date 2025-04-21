@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { ShapeData } from "../types/shapeData";
 
 interface useSelectedShapeProps {
@@ -20,36 +20,55 @@ function useSelectedShape({ shapes }: useSelectedShapeProps) {
   const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null);
   const [shapeTextInput, setShapeTextInput] = useState<string | null>(null);
 
+  const selectedShape = useMemo(() => {
+    return shapes.find(shape => shape.id === selectedShapeId) || null;
+  }, [selectedShapeId, shapes]);
+
   /**Sincroniza el texto de la figura seleccionada
    * con el estado local cuando cambia la figura seleccionada
   */
   useEffect(() => {
-    if (selectedShapeId) {
-      const shape = shapes.find(s => s.id === selectedShapeId);
-      setShapeTextInput(shape?.text || "");
-    }
-  }, [selectedShapeId, shapes]);
+    // if (selectedShapeId) {
+    //   const shape = shapes.find(s => s.id === selectedShapeId);
+    //   setShapeTextInput(shape?.text || "");
+    // }
+    setShapeTextInput(selectedShape?.text || "");
+  }, [selectedShape]);
 
   /**Actualiza el texto de la figura seleccionada 
    * @param newText - Nuevo texto a asignar
   */
-  const updateText = (newText: string) => setShapeTextInput(newText);
+  const updateText = useCallback((newText: string) => {
+    setShapeTextInput(newText)
+  }, []);
 
   /**Maneja la seleccion de una figura en el canvas
    * @param shapeId - ID de la figura a seleccionar
   */
-  const onSelectShape = (shapeId: string | null) => setSelectedShapeId(shapeId);
+  const onSelectShape = useCallback((shapeId: string | null) => {
+    setSelectedShapeId(shapeId)
+  }, []);
 
   /**Desactiva la figura seleccionada */
-  const ofSelectShape = () => setSelectedShapeId(null);
+  const ofSelectShape = useCallback(() => { 
+    setSelectedShapeId(null)
+  }, []);
 
-  return { 
+  return useMemo(() => ({
     selectedShapeId, 
-    shapeTextInput, 
+    shapeTextInput,
+    selectedShape,
     updateText, 
     onSelectShape, 
     ofSelectShape 
-  };
+  }), [
+    selectedShapeId, 
+    shapeTextInput,
+    selectedShape,
+    updateText, 
+    onSelectShape, 
+    ofSelectShape
+  ]);
 };
 
 export default useSelectedShape;

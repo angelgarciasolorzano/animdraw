@@ -1,7 +1,8 @@
 import { Group, Rect, Ellipse, Text } from "react-konva";
-import { ShapeData } from "../types/shapeData";
-import AnchorPoint from "./AnchorPoint";
+import { AnchorPoint as AnchorPointType, ShapeData } from "../types/shapeData";
 import useShapeInteraction from "../hooks/useShapeInteraction";
+import React, { useMemo } from "react";
+import AnchorPoint from "./AnchorPoint";
 
 interface ShapeWithAnchorsProps {
   shape: ShapeData;
@@ -23,93 +24,131 @@ function ShapeWithAnchors(props: ShapeWithAnchorsProps) {
     updateHovered, handleDragEnd, handleDragMove
   } = useShapeInteraction({ shape, isSelected, onDragEnd });
 
+  const shapeRendererProps = useMemo(() => ({
+    shape, isSelected
+  }), [shape, isSelected]);
+
+  const anchorPointRendererPorps = useMemo(() => ({
+    anchors: shape.anchors,
+    shapeX: shape.x,
+    shapeY: shape.y,
+    selectedAnchorId,
+    onSelectAnchor
+  }), [shape.anchors, shape.x, shape.y, selectedAnchorId, onSelectAnchor]);
+
   return (
     <Group>
-      {/* Contenedor principal de la figura */}
       <Group
-        ref={shapeGroupRef} //* Referencia al grupo para maniupular su tamaño y posición dinámicamente
+        ref={shapeGroupRef}
         x={shape.x}
         y={shape.y}
         width={shape.width}
         height={shape.height}
-        draggable //* Permite arrastrar la figura
+        draggable
         onClick={onSelectShape}
         onTap={onSelectShape}
         onDragEnd={handleDragEnd}
         onDragMove={handleDragMove}
-        //onMouseEnter={() => setIsHovered(true)} //* Al hacer hover, se activan los puntos de anclaje
-        //onMouseLeave={() => setIsHovered(false)} //* Al dejar de hover, se desactivan los puntos de anclaje
         onMouseEnter={() => updateHovered(true)}
         onMouseLeave={() => updateHovered(false)}
       >
-        {/*Renderización de la figura según su tipo*/}
+        <ShapeRenderer {...shapeRendererProps} />
+        <ShapeText shape={shape} />
 
-        {shape.type === "rect" && (
-          <Rect
-            width={shape.width}
-            height={shape.height}
-            fill={shape.fill}
-            stroke={isSelected ? "#3b82f6" : shape.stroke}
-            strokeWidth={isSelected ? 3 : shape.strokeWidth}
-          />
-        )}
-
-        {shape.type === "ellipse" && (
-          <Ellipse
-            radiusX={shape.width / 2}
-            radiusY={shape.height / 2}
-            x={shape.width / 2}
-            y={shape.height / 2}
-            fill={shape.fill}
-            stroke={isSelected ? "#3b82f6" : shape.stroke}
-            strokeWidth={isSelected ? 3 : shape.strokeWidth}
-          />
-        )}
-
-        {/*Renderización del texto de la figura*/}
-
-        <Text
-          x={8}
-          y={shape.height / 2 - 10}
-          width={shape.width - 16}
-          text={shape.text}
-          fontSize={16}
-          align="center"
-          fill="#1f2937"
-        />
-
-        {/*Renderización de los puntos de anclaje*/}
-        {(isSelected || isHovered) &&
-          shape.anchors.map((anchor) => (
-            <AnchorPoint
-              key={anchor.id}
-              anchor={{
-                ...anchor,
-                x: anchor.x - shape.x, //* coordenadas relativas al grupo
-                y: anchor.y - shape.y,
-              }}
-              isSelected={selectedAnchorId === anchor.id}
-              onSelect={() => onSelectAnchor(anchor.id)}
-            />
-          )
+        {(isSelected || isHovered) && (
+          <AnchorPointRenderer {...anchorPointRendererPorps} />
         )}
       </Group>
+    </Group>
+  )
+};
 
-      {/* Transformer para redimensionar */}
-      {/* {isSelected && (
-        <Transformer
-          ref={transformerRef}
-          anchorSize={8}
-          borderStroke="#3b82f6"
-          borderStrokeWidth={2}
-          boundBoxFunc={(oldBox, newBox) => {
-            if (newBox.width < 5 || newBox.height < 5) return oldBox;
-            return newBox;
+type ShapeRendererProps = Pick<ShapeWithAnchorsProps, "shape" | "isSelected">;
+
+const ShapeRenderer = React.memo(({ shape, isSelected }: ShapeRendererProps) => {
+  const commonProps = {
+    fill: shape.fill,
+    stroke: isSelected ? "#3b82f6" : shape.stroke,
+    strokeWidth: isSelected ? 3 : shape.strokeWidth,
+  };
+
+  switch (shape.type) {
+    case "rect":
+      return <Rect {...commonProps} width={shape.width} height={shape.height} />;
+    case "ellipse":
+      return (
+        <Ellipse
+          {...commonProps}
+          radiusX={shape.width / 2}
+          radiusY={shape.height / 2}
+          x={shape.width / 2}
+          y={shape.height / 2}
+        />
+      )
+    default: return null;
+  }
+});
+
+type ShapeTextProps = Pick<ShapeWithAnchorsProps, "shape">;
+
+const ShapeText = React.memo(({ shape }: ShapeTextProps) => {
+  return (
+    <Text 
+      x={8}
+      y={shape.height / 2 - 10}
+      width={shape.width - 16}
+      text={shape.text}
+      fontSize={16}
+      align="center"
+      fill="#1f2937"
+    />
+  )
+});
+
+type AnchorPointRendererProps = Pick<ShapeWithAnchorsProps, 
+  "selectedAnchorId" | "onSelectAnchor"> & {
+  anchors: AnchorPointType[];
+  shapeX: number;
+  shapeY: number;
+};
+
+const AnchorPointRenderer = React.memo((props: AnchorPointRendererProps) => {
+  const { anchors, shapeX, shapeY, selectedAnchorId, onSelectAnchor } = props;
+
+  return (
+    <>
+      {anchors.map((anchor) => {
+        return (
+          <AnchorPoint
+          key={anchor.id}
+          isSelected={selectedAnchorId === anchor.id}
+          onSelect={() => onSelectAnchor(anchor.id)}
+          anchor={{
+            ...anchor,
+            x: anchor.x - shapeX,
+            y: anchor.y - shapeY,
           }}
         />
-      )} */}
-    </Group>
+        )
+      })}
+    </>
+  )
+});
+
+const propsAreEquial = (prev: ShapeWithAnchorsProps, next: ShapeWithAnchorsProps): boolean => {
+  return (
+    prev.shape.id === next.shape.id &&
+    prev.isSelected === next.isSelected &&
+    prev.selectedAnchorId === next.selectedAnchorId &&
+    prev.shape.x === next.shape.x &&
+    prev.shape.y === next.shape.y &&
+    prev.shape.width === next.shape.width &&
+    prev.shape.height === next.shape.height &&
+    prev.shape.fill === next.shape.fill &&
+    prev.shape.stroke === next.shape.stroke &&
+    prev.shape.strokeWidth === next.shape.strokeWidth &&
+    prev.shape.text === next.shape.text
   );
 };
 
-export default ShapeWithAnchors;
+export default React.memo(ShapeWithAnchors, propsAreEquial);
