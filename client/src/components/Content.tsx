@@ -18,12 +18,16 @@ function Content({ shapes, updateShapeAttributes }: ContentProps) {
 
   const { 
     connections, selectedAnchorId, allAnchors, 
-    handleSelectAnchor, ofSelectAnchor 
+    handleSelectAnchor, ofSelectAnchor, deselectAll
   } = useConnections({ shapes, onSelectShapeId: onSelectShape });
 
   return (
     <div className='flex-1 bg-gray-100'>
-      <Stage width={window.innerWidth - 500} height={window.innerHeight}>
+      <Stage 
+        width={window.innerWidth - 500} 
+        height={window.innerHeight}
+        onClick={(e) => { if (e.target === e.target.getStage()) deselectAll(); }}
+      >
         <Layer>
           {connections.length > 0 && connections.map(conn => {
             const fromAnchor = allAnchors[conn.fromAnchor];

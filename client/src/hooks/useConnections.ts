@@ -45,6 +45,13 @@ function useConnections({ shapes, onSelectShapeId }: useConnectionsProps) {
     return anchors;
   }, [shapes]);
 
+  /**Desactiva todas las anclajes y figuras seleccionadas */
+  const deselectAll = useCallback(() => {
+    setSelectedAnchorId(null);
+    setPendingAnchorId(null);
+    onSelectShapeId(null);
+  }, [onSelectShapeId]);
+
   /**Verifica si una conexion entre dos anclajes es valida 
    * @param fromId - ID del anclaje de origen
    * @param toId - ID del anclaje de destino
@@ -66,12 +73,24 @@ function useConnections({ shapes, onSelectShapeId }: useConnectionsProps) {
     const anchor = allAnchors[anchorId];
     if (!anchor) return;
 
+    /**Si se hace click en el mismo anclaje, deselecciona el anclaje */
+    if (selectedAnchorId === anchorId || pendingAnchorId === anchorId) {
+      deselectAll();
+      return;
+    };
+
+    /**Si es un anclaje de la misma figura, se reemplza la seleccion */
+    if (pendingAnchorId && allAnchors[pendingAnchorId]?.shapeId === anchor.shapeId) {
+      setPendingAnchorId(anchorId);
+      setSelectedAnchorId(anchorId);
+      return;
+    };
+
     if (pendingAnchorId) {
       if (!isValidConnection(pendingAnchorId, anchorId)) {
-        setPendingAnchorId(null);
-        setSelectedAnchorId(anchorId);
+        deselectAll();
         return;
-      }
+      };
 
       setConnections(prev => [...prev, {
         id: `conn-${pendingAnchorId}-${anchorId}-${Date.now()}`,
@@ -80,15 +99,16 @@ function useConnections({ shapes, onSelectShapeId }: useConnectionsProps) {
         ...DEFAULT_CONNECTIONS_STYLE
       }]);
 
-      setPendingAnchorId(null);
-      setSelectedAnchorId(null);
-      onSelectShapeId(null);
+      deselectAll();
     } else {
       setPendingAnchorId(anchorId);
       setSelectedAnchorId(anchorId);
       onSelectShapeId(anchor.shapeId);
     };
-  }, [allAnchors, pendingAnchorId, isValidConnection, onSelectShapeId]);
+  }, [
+    allAnchors, pendingAnchorId, selectedAnchorId, 
+    isValidConnection, onSelectShapeId, deselectAll
+  ]);
 
   /**Desactiva el anclaje seleccionado */
   const ofSelectAnchor = useCallback(() => {
@@ -100,15 +120,17 @@ function useConnections({ shapes, onSelectShapeId }: useConnectionsProps) {
     selectedAnchorId, 
     pendingAnchorId, 
     allAnchors,
-    handleSelectAnchor, 
-    ofSelectAnchor
+    handleSelectAnchor,
+    ofSelectAnchor,
+    deselectAll
   }), [
     connections, 
     selectedAnchorId, 
     pendingAnchorId, 
     allAnchors,
     handleSelectAnchor, 
-    ofSelectAnchor
+    ofSelectAnchor,
+    deselectAll
   ]);
 };
 

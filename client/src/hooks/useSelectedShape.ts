@@ -20,6 +20,9 @@ function useSelectedShape({ shapes }: useSelectedShapeProps) {
   const [selectedShapeId, setSelectedShapeId] = useState<string | null>(null);
   const [shapeTextInput, setShapeTextInput] = useState<string | null>(null);
 
+  /**Figura actualmente seleccionada, se calcula a partir del id seleccionado 
+   * se actualiza automaticamente cuando cambia el id seleccionado
+  */
   const selectedShape = useMemo(() => {
     return shapes.find(shape => shape.id === selectedShapeId) || null;
   }, [selectedShapeId, shapes]);
