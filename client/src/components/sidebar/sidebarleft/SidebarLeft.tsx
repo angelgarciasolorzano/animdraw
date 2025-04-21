@@ -2,7 +2,18 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { sidebarItem, IconItem } from "./sidebarItem";
 
-function SidebarLeft() {
+interface SidebarLeftProps {
+  onAddShape: (
+    id: string, 
+    x: number, 
+    y: number, 
+    width: number, 
+    height: number, 
+    type: "rect" | "ellipse"
+  ) => void;
+};
+
+function SidebarLeft({ onAddShape }: SidebarLeftProps) {
   return (
     <div className="w-48 bg-white border-r border-gray-200">
       {sidebarItem.map((section) => (
@@ -11,19 +22,20 @@ function SidebarLeft() {
           value={section.value} 
           title={section.title} 
           icon={section.icon} 
+          onAddShape={onAddShape}
         />
       ))}
     </div>
   )
 };
 
-interface SidebarSectionProps {
+type SidebarSectionProps = Pick<SidebarLeftProps, "onAddShape"> & {
   title: string;
   value: string;
   icon: IconItem[];
 };
 
-function SidebarSection({ title, value, icon }: SidebarSectionProps) {
+function SidebarSection({ title, value, icon, onAddShape }: SidebarSectionProps) {
   return (
     <div className="m-1">
       <Accordion type="single" collapsible>
@@ -35,7 +47,7 @@ function SidebarSection({ title, value, icon }: SidebarSectionProps) {
           </AccordionTrigger>
 
           <AccordionContent className="px-1.5">
-            <SidebarIcons icon={icon} />
+            <SidebarTooltip icon={icon} onAddShape={onAddShape} />
           </AccordionContent>
         </AccordionItem>
       </Accordion>
@@ -43,23 +55,31 @@ function SidebarSection({ title, value, icon }: SidebarSectionProps) {
   )
 };
 
-type SidebarIconsProps = Pick<SidebarSectionProps, "icon">;
+type SidebarIconsProps = Pick<SidebarSectionProps, "icon" | "onAddShape">;
 
-function SidebarIcons({ icon }: SidebarIconsProps) {
+function SidebarTooltip({ icon, onAddShape }: SidebarIconsProps) {
   return (
     <TooltipProvider>
       <div className="grid grid-cols-4 text-2xl gap-2 py-2">
-        {icon.map(({ icon: Icon, label }, index) => (
-          <Tooltip key={index}>
-            <TooltipTrigger asChild>
-              <Icon className="cursor-pointer" />
-            </TooltipTrigger>
+        {icon.map((icon, index) => {
+          const { icon: Icon, label, type, x, y, width, height } = icon;
+          const id = `${type}-${Date.now()}`;
 
-            <TooltipContent>
-              {label}
-            </TooltipContent>
-          </Tooltip>
-        ))}
+          return (
+            <Tooltip key={index}>
+              <TooltipTrigger asChild>
+                <Icon 
+                  className="cursor-pointer" 
+                  onClick={() => onAddShape(id, x, y, width, height, type)} 
+                />
+              </TooltipTrigger>
+
+              <TooltipContent>
+                {label}
+              </TooltipContent>
+            </Tooltip>
+          )
+        })}
       </div>
     </TooltipProvider>
   )

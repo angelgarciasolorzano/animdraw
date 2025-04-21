@@ -5,6 +5,12 @@ import { MdOutlineCircle, MdOutlineRectangle } from "react-icons/md";
 export interface IconItem {
   icon: IconType;
   label: string;
+  type: "rect" | "ellipse";
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  onClick?: () => void;
 };
 
 interface ItemsSections {
@@ -20,15 +26,30 @@ export const sidebarItem: ItemsSections[] = [
     icon: [
       {
         icon: MdOutlineRectangle,
-        label: "Rectangulo"
+        label: "Rectangulo",
+        type: "rect",
+        x: 100,
+        y: 100,
+        width: 150,
+        height: 100
       },
       {
         icon: MdOutlineCircle,
-        label: "Círculo"
+        label: "Círculo",
+        type: "ellipse",
+        x: 300,
+        y: 200,
+        width: 150,
+        height: 100
       },
       {
         icon: IoTriangleOutline,
-        label: "Triángulo"
+        label: "Triángulo",
+        type: "ellipse",
+        x: 300,
+        y: 200,
+        width: 150,
+        height: 100
       }
     ]
   }

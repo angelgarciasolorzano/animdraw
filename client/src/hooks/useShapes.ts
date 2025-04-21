@@ -10,8 +10,15 @@ import { ShapeData } from "../types/shapeData";
  *   updateShapeText: Funcion para actualizar el texto de una figura
  * }
 */
-function useShapes(initialShapes: ShapeData[]) {
+function useShapes(initialShapes: ShapeData[] = []) {
   const [shapes, setShapes] = useState<ShapeData[]>(initialShapes);
+
+  /**Agrega una figura a la colección de figuras
+   * @param shape - Figura a agregar
+  */
+  function addShape(shape: ShapeData) {
+    setShapes(prev => [...prev, shape]);
+  };
 
   /**Actualiza atributos de una figura especifica como posicion y tamaño 
    * @param shapeId - ID de la figura a actualizar
@@ -33,7 +40,7 @@ function useShapes(initialShapes: ShapeData[]) {
     ));
   };
 
-  return { shapes, updateShapeAttributes, updateShapeText };
+  return { shapes, addShape, updateShapeAttributes, updateShapeText };
 };
 
 export default useShapes;

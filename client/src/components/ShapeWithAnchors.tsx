@@ -58,6 +58,8 @@ function ShapeWithAnchors(props: ShapeWithAnchorsProps) {
           <Ellipse
             radiusX={shape.width / 2}
             radiusY={shape.height / 2}
+            x={shape.width / 2}
+            y={shape.height / 2}
             fill={shape.fill}
             stroke={isSelected ? "#3b82f6" : shape.stroke}
             strokeWidth={isSelected ? 3 : shape.strokeWidth}
