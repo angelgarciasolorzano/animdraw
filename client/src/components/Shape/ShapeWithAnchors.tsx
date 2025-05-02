@@ -1,11 +1,10 @@
-import useConnection from "@/hooks/useConnection";
-import useDiagram from "@/hooks/useDiagram";
-import useShape from "@/hooks/useShape";
-import useShapeInteraction from "@/hooks/useShapeInteraction";
-import AnchorPoint from "./AnchorPoint";
-import { Group, Rect, Ellipse, Text } from "react-konva";
-import { ShapeData } from "@/types/shapeData";
 import { useMemo } from "react";
+import { Group, Rect, Ellipse, Text } from "react-konva";
+
+import { useShape, useDiagram, useConnection, useShapeInteraction } from "@/hooks";
+import { ShapeData } from "@/types";
+
+import AnchorPoint from "./AnchorPoint";
 
 interface ShapeWithAnchorsProps { shape: ShapeData; };
 

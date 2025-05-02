@@ -1,9 +1,6 @@
 import { Layer, Stage } from "react-konva";
-import ConnectionLine from "./ConnectionLine";
-import ShapeWithAnchors from "./ShapeWithAnchors";
-import useShape from "../hooks/useShape";
-import useDiagram from "../hooks/useDiagram";
-import useConnection from "@/hooks/useConnection";
+import { useShape, useDiagram, useConnection } from "@/hooks";
+import { ConnectionLine, ShapeWithAnchors } from "./Shape";
 
 function Content() {
   const { shapes } = useShape();

@@ -1,4 +1,4 @@
-import { AnchorPoint } from "@/types/shapeData";
+import { AnchorPoint } from "@/types";
 
 const createAnchors = (
   shapeId: string,

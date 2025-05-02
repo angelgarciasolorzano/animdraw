@@ -1,8 +1,5 @@
-import Content from "../components/Content";
-import Header from "../components/Header";
-import SidebarLeft from "../components/sidebar/sidebarleft/SidebarLeft";
-import SidebarRight from "../components/sidebar/sidebarRight/SidebarRight";
-
+import { Content, Header } from "@/components";
+import { SidebarLeft, SidebarRight } from "@/components/sidebar";
 import { ConnectionProvider, DiagramProvider, ShapesProvider } from "@/context";
 
 function Dashboard() {

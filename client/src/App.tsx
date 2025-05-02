@@ -1,4 +1,4 @@
-import Dashboard from './layouts/Dashboard';
+import { Dashboard } from "@/layouts";
 
 function App() {
   return (

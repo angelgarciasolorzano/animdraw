@@ -1,8 +1,8 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
+import { useShape, useDiagram } from "@/hooks";
 import { sidebarItem, IconItem } from "./sidebarItem";
-import useShape from "@/hooks/useShape";
-import useDiagram from "@/hooks/useDiagram";
 
 function SidebarLeft() {
   const { addShape } = useShape();

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { ShapeData } from "../types/shapeData";
+import { ShapeData } from "@/types";
 import Konva from "konva";
 
 interface useShapeInteractionProps {
