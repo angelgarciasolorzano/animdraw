@@ -29,8 +29,16 @@ function AnchorPoint (props: AnchorPointProps) {
       fill={isSelected ? "#3b42f6" : "#fff"} //* Color del punto de anclaje (si es seleccionado)
       stroke="#4b5563"
       strokeWidth={1.5}
-      onClick={handleClick}
-      onTap={onSelect}
+      // onClick={handleClick}
+      // onTap={onSelect}
+      onClick={(e) => {
+        e.cancelBubble = true; // Evita que el evento se propague al grupo padre
+        onSelect();
+      }}
+      onTap={(e) => {
+        e.cancelBubble = true;
+        onSelect();
+      }}
     />
   );
 };

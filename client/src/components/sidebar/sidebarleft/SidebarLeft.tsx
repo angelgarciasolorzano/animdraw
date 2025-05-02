@@ -1,19 +1,30 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { sidebarItem, IconItem } from "./sidebarItem";
+import useShape from "@/hooks/useShape";
+import useDiagram from "@/hooks/useDiagram";
 
-interface SidebarLeftProps {
-  onAddShape: (
-    id: string, 
-    x: number, 
-    y: number, 
-    width: number, 
-    height: number, 
-    type: "rect" | "ellipse"
-  ) => void;
-};
+function SidebarLeft() {
+  const { addShape } = useShape();
+  const { selectShape } = useDiagram();
 
-function SidebarLeft({ onAddShape }: SidebarLeftProps) {
+  const handleAddShape = (type:"rect" | "ellipse" ,x: number, y: number, width: number, height: number) => {
+    const newShape = {
+      type,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      fill: "#e5e7eb",
+      stroke: "#6b7280",
+      strokeWidth: 2,
+      text: "Figura 1",
+    };
+
+    const newId = addShape(newShape);
+    selectShape(newId);
+  };
+
   return (
     <div className="w-48 bg-white border-r border-gray-200">
       {sidebarItem.map((section) => (
@@ -22,14 +33,15 @@ function SidebarLeft({ onAddShape }: SidebarLeftProps) {
           value={section.value} 
           title={section.title} 
           icon={section.icon} 
-          onAddShape={onAddShape}
+          onAddShape={handleAddShape}
         />
       ))}
     </div>
   )
 };
 
-type SidebarSectionProps = Pick<SidebarLeftProps, "onAddShape"> & {
+interface SidebarSectionProps {
+  onAddShape: (type: "rect" | "ellipse",x: number, y: number, width: number, height: number) => void;
   title: string;
   value: string;
   icon: IconItem[];
@@ -61,16 +73,15 @@ function SidebarTooltip({ icon, onAddShape }: SidebarIconsProps) {
   return (
     <TooltipProvider>
       <div className="grid grid-cols-4 text-2xl gap-2 py-2">
-        {icon.map((icon, index) => {
-          const { icon: Icon, label, type, x, y, width, height } = icon;
-          const id = `${type}-${Date.now()}`;
+        {icon.map((item, index) => {
+          const { icon: Icon, label, type, x, y, width, height } = item;
 
           return (
             <Tooltip key={index}>
               <TooltipTrigger asChild>
                 <Icon 
                   className="cursor-pointer" 
-                  onClick={() => onAddShape(id, x, y, width, height, type)} 
+                  onClick={() => onAddShape(type, x, y, width, height)} 
                 />
               </TooltipTrigger>
 
