@@ -1,7 +1,6 @@
 import { useState, createContext, useMemo, useCallback } from "react";
-import { AnchorPoint, Connection } from "@/types/shapeData";
-import useShape from "@/hooks/useShape";
-import useDiagram from "@/hooks/useDiagram";
+import { AnchorPoint, Connection } from "@/types";
+import { useShape, useDiagram } from "@/hooks";
 
 interface ConnectionsContextType {
   connections: Connection[];

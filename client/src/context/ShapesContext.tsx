@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useMemo, useState } from "react";
-import { ShapeData } from "@/types/shapeData";
-import createAnchors from "@/utils/createAnchor";
+import { ShapeData } from "@/types";
+import { createAnchors } from "@/utils";
 
 interface ShapesContextType {
   shapes: ShapeData[];

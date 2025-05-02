@@ -1,1 +1,1 @@
-export { default as createAnchor } from "./createAnchor";
+export { default as createAnchors } from "./createAnchor";
