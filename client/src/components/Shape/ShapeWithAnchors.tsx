@@ -109,10 +109,29 @@ function ShapeWithAnchors({ shape }: ShapeWithAnchorsProps) {
         {/* Texto de la figura */}
         <Text
           x={8}
-          y={shape.height / 2 - 10}
+          //y={shape.height / 2 - 10}
+          y={0}
+          padding={6}
+          wrap="word"
           width={shape.width - 16}
+          height={shape.height}
           text={shape.text}
-          align="center"
+          opacity={shape.textStyle?.opacity ?? 1}
+          align={shape.textStyle?.align || "center"}
+          verticalAlign={shape.textStyle?.verticalAlign || "middle"}
+          fontFamily={shape.textStyle?.fontFamily || 'Arial'}
+          fontSize={shape.textStyle?.fontSize || 15}
+          fontStyle={
+            [
+              shape.textStyle?.fontStyle === 'italic' ? 'italic' : '',
+              shape.textStyle?.fontWeight === 'bold' ? 'bold' : ''
+            ].filter(Boolean).join(' ') || 'normal'
+          }
+          fill={shape.textStyle?.color || '#000000'}
+          textDecoration={shape.textStyle?.textDecoration === 'underline' ? 'underline' : ''}
+          shadowColor={shape.textStyle?.shadowColor ? shape.textStyle?.shadowColor : undefined}
+          shadowBlur={shape.textStyle?.hasShadow ? shape.textStyle?.shadowBlur ?? 3 : 0}
+          shadowOpacity={shape.textStyle?.hasShadow ? shape.textStyle?.shadowOpacity ?? 1 : 0}
         />
 
         {/* Puntos de anclaje */}

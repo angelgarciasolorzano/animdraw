@@ -16,6 +16,21 @@ export interface ShapeData {
   stroke: string;
   strokeWidth: number;
   text: string;
+  textStyle: {
+    opacity?: number;
+    fontFamily?: string;
+    fontSize?: number;
+    fontWeight?: "normal" | "bold";
+    fontStyle?: "normal" | "italic" | "oblique";
+    textDecoration?: "none" | "underline" | "line-through";
+    color?: string;
+    align?: "left" | "center" | "right";
+    verticalAlign?: "top" | "middle" | "bottom";
+    hasShadow?: boolean;
+    shadowColor?: string;
+    shadowBlur?: number;
+    shadowOpacity?: number;
+  };
   rotation?: number;
   anchors: AnchorPoint[];
 };

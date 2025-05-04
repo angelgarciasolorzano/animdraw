@@ -31,9 +31,22 @@ export function ShapesProvider({ children }: ShapesProviderProps) {
   }, []);
 
   const updateShapeAttributes = useCallback((shapeId: ShapeData["id"], attributes: Partial<ShapeData>) => {
-    setShapes(prevShapes => prevShapes.map((shape) => (
-      shape.id === shapeId ? { ...shape, ...attributes } : shape
-    )));
+    setShapes(prevShapes => prevShapes.map(shape => {
+      if (shape.id !== shapeId) return shape;
+
+      if (attributes.textStyle) {
+        return {
+          ...shape,
+          ...attributes,
+          textStyle: {
+            ...shape.textStyle,
+            ...attributes.textStyle
+          }
+        }
+      };
+
+      return {...shape, ...attributes};
+    }))
   }, []);
 
   const removeShape = useCallback((shapeId: ShapeData["id"]) => {
