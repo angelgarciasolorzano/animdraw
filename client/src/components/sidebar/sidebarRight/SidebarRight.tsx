@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { cn } from "@/lib/utils";
@@ -6,32 +6,32 @@ import { useDiagram, useShape } from "@/hooks";
 import { ShapeData } from "@/types";
 
 import { sidebarTabOptions} from "./sidebarItem";
-import TextTab from "./TabText/TextTab";
+import { TextTab } from "./TabText";
 
 function SidebarRight() {
   const { selectedShapeId } = useDiagram();
   const { getShapeById, updateShapeAttributes } = useShape();
-  
   const [activeTap, setActiveTap] = useState<string>("estilo");
-  const shape = selectedShapeId ? getShapeById(selectedShapeId) : null;
 
   useEffect(() => {
     if (!selectedShapeId) setActiveTap("estilo");
     else setActiveTap("texto");
   }, [selectedShapeId]);
 
-  const handleTextStyleChange = (
+  const shape = useMemo(() => {
+    return selectedShapeId ? getShapeById(selectedShapeId) : null;
+  }, [selectedShapeId, getShapeById]);
+
+  const handleTextStyleChange = useCallback((
     key: keyof ShapeData["textStyle"], 
     value: string | number | boolean
   ) => {
     if (!shape) return null;
 
-    updateShapeAttributes(shape?.id, {
-      textStyle: {
-        [key]: value
-      }
-    });
-  };
+    updateShapeAttributes(shape.id, {
+      textStyle: { ...shape.textStyle, [key]: value }
+    })
+  }, [shape, updateShapeAttributes]);
 
   return (
     <div className="w-64 bg-white border-l border-gray-300">

@@ -1,3 +1,5 @@
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+
 import { 
   Select, SelectContent, SelectGroup, SelectItem, 
   SelectLabel, SelectTrigger, SelectValue 
@@ -25,6 +27,7 @@ function TextStylePanel(props: TextStylePanelProps) {
 
   return (
     <div className="grid gap-1.5">
+      <TextTitle />
       <TextFont shape={shape} handleTextStyleChange={handleTextStyleChange} />
       <TextFontStyle shape={shape} handleTextStyleChange={handleTextStyleChange} />
       <TextAlign shape={shape} handleTextStyleChange={handleTextStyleChange} />
@@ -36,13 +39,17 @@ function TextStylePanel(props: TextStylePanelProps) {
 
 type TextFontProps = TextStylePanelProps;
 
+function TextTitle() {
+  return (
+    <h3 className="text-sm font-semibold">
+      Fuente
+    </h3>
+  )
+};
+
 function TextFont({ shape, handleTextStyleChange }: TextFontProps) {
   return (
     <div className="mb-0.5">
-      <span className="text-sm font-semibold">
-        Fuente
-      </span>
-
       <Select
         value={shape?.textStyle?.fontFamily || "Arial"}
         onValueChange={(value) => handleTextStyleChange("fontFamily", value)}
@@ -73,22 +80,36 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
   return (
     <div className="flex gap-3 justify-between">
       <div className="flex gap-1">
-        {sidebarFontStyleOptions.map((option, index) => {
-          const { prop, activeValue, inactiveValue, label, icon: Icon } = option;
+        <TooltipProvider>
+          <div className="flex gap-1">
+            {sidebarFontStyleOptions.map((item, index) => {
+              const { prop, activeValue, inactiveValue, label, icon: Icon } = item;
 
-          return (
-            <Toggle
-              key={index}
-              pressed={shape?.textStyle?.[prop] === activeValue}
-              aria-label={label}
-              onPressedChange={(pressed) => (
-                handleTextStyleChange(prop, pressed ? activeValue : inactiveValue)
-              )}
-            >
-              <Icon />
-            </Toggle>
-          )
-        })}
+              return (
+                <Tooltip delayDuration={100} key={index}>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <Toggle
+                        key={index}
+                        pressed={shape?.textStyle?.[prop] === activeValue}
+                        aria-label={label}
+                        onPressedChange={(pressed) => (
+                          handleTextStyleChange(prop, pressed ? activeValue : inactiveValue)
+                        )}
+                      >
+                        <Icon />
+                      </Toggle>
+                    </div>
+                  </TooltipTrigger>
+
+                  <TooltipContent>
+                    {label}
+                  </TooltipContent>
+                </Tooltip>
+              )
+            })}
+          </div>
+        </TooltipProvider>
       </div>
 
       <Input 
@@ -108,43 +129,65 @@ type TextAlignProps = TextStylePanelProps;
 function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
   return ( 
     <div className="flex justify-between">
-      <div className="flex">
-        {sidebarTextAlignOptions.map((option, index) => {
-          const { value, inactiveValue, label, icon: Icon } = option;
+      <TooltipProvider>
+        <div className="flex gap-1">
+          {sidebarTextAlignOptions.map((item, index) => {
+            const { value, inactiveValue, label, icon: Icon } = item;
 
-          return (
-            <Toggle
-              key={index}
-              pressed={shape?.textStyle?.align === value}
-              aria-label={label}
-              onPressedChange={(pressed) => (
-                handleTextStyleChange("align", pressed ? value : inactiveValue)
-              )}
-            >
-              <Icon />
-            </Toggle>
-          )
-        })}
-      </div>
+            return (
+              <Tooltip delayDuration={100} key={index}>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Toggle
+                      key={index}
+                      pressed={shape?.textStyle?.align === value}
+                      aria-label={label}
+                      onPressedChange={(pressed) => (
+                        handleTextStyleChange("align", pressed ? value : inactiveValue)
+                      )}
+                    >
+                      <Icon />
+                    </Toggle>
+                  </div>
+                </TooltipTrigger>
 
-      <div className="flex">
-        {sidebarTextVerticalAlignOptions.map((option, index) => {
-          const { value, inactiveValue, label, icon: Icon } = option;
+                <TooltipContent>
+                  {label}
+                </TooltipContent>
+              </Tooltip>
+            )
+          })}
+        </div>
 
-          return (
-            <Toggle
-              key={index}
-              pressed={shape?.textStyle?.verticalAlign === value}
-              aria-label={label}
-              onPressedChange={(pressed) => (
-                handleTextStyleChange("verticalAlign", pressed ? value : inactiveValue)
-              )}
-            >
-              <Icon />
-            </Toggle>
-          )
-        })}
-      </div>
+        <div className="flex gap-0.5">
+          {sidebarTextVerticalAlignOptions.map((item, index) => {
+            const { value, inactiveValue, label, icon: Icon } = item;
+
+            return (
+              <Tooltip delayDuration={100} key={index}>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Toggle
+                      key={index}
+                      pressed={shape?.textStyle?.verticalAlign === value}
+                      aria-label={label}
+                      onPressedChange={(pressed) => (
+                        handleTextStyleChange("verticalAlign", pressed ? value : inactiveValue)
+                      )}
+                    >
+                      <Icon />
+                    </Toggle>
+                  </div>
+                </TooltipTrigger>
+
+                <TooltipContent>
+                  {label}
+                </TooltipContent>
+              </Tooltip>
+            )
+          })}
+        </div>
+      </TooltipProvider>
     </div>
   )
 };
