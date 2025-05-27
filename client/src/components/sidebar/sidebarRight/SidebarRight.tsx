@@ -7,6 +7,7 @@ import { ShapeData } from "@/types";
 
 import { sidebarTabOptions} from "./sidebarItem";
 import { TextTab } from "./TabText";
+import { StyleTab } from "./TabStyle";
 
 function SidebarRight() {
   const { selectedShapeId } = useDiagram();
@@ -57,7 +58,7 @@ function SidebarRight() {
           ))}
         </TabsList>
         <TabsContent value="estilo">
-          Herramientas para el estilo de la figura
+          <StyleTab />
         </TabsContent>
         <TabsContent value="texto">
           <TextTab
