@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { 
   Select, SelectContent, SelectItem, SelectGroup,
   SelectLabel, SelectTrigger, SelectValue 
-} from "@/components/select/Select";
+} from "@/components/select";
 
 import { LineOptions, options } from "./item";
 

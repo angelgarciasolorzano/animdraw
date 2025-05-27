@@ -8,7 +8,7 @@ import AnchorPoint from "./AnchorPoint";
 
 interface ShapeWithAnchorsProps { shape: ShapeData; };
 
-function ShapeWithAnchors({ shape }: ShapeWithAnchorsProps) {
+function WithAnchors({ shape }: ShapeWithAnchorsProps) {
   const { selectShape, selectAnchor, isShapeSelected, isAnchorSelected, deselectAll } = useDiagram();
   const { updateShapeAttributes } = useShape();
   const { allAnchors, addConnection, getConnectionByShape } = useConnection();
@@ -156,4 +156,4 @@ function ShapeWithAnchors({ shape }: ShapeWithAnchorsProps) {
   );
 }
 
-export default ShapeWithAnchors;
+export default WithAnchors;

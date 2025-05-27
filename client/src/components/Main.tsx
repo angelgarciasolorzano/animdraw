@@ -1,8 +1,8 @@
 import { Layer, Stage } from "react-konva";
 import { useShape, useDiagram, useConnection } from "@/hooks";
-import { ConnectionLine, ShapeWithAnchors } from "./Shape";
+import { ConnectionLine, WithAnchors } from "./shape";
 
-function Content() {
+function Main() {
   const { shapes } = useShape();
   const { connections, allAnchors } = useConnection();
   const { deselectAll } = useDiagram();
@@ -38,7 +38,7 @@ function Content() {
 
           {/* Renderizar todas las figuras */}
           {shapes.map(shape => (
-            <ShapeWithAnchors
+            <WithAnchors
               key={shape.id}
               shape={shape}
             />
@@ -49,4 +49,4 @@ function Content() {
   );
 }
 
-export default Content;
+export default Main;
