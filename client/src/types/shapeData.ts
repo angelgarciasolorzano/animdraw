@@ -5,6 +5,13 @@ export interface AnchorPoint {
   shapeId: string;
 };
 
+export interface ShapeShadow {
+  isActive?: boolean;
+  color?: string;
+  blur?: number;
+  opacity?: number;
+};
+
 export interface ShapeData {
   id: string;
   type: "rect" | "ellipse";
@@ -16,6 +23,9 @@ export interface ShapeData {
   stroke: string;
   strokeWidth: number;
   text: string;
+  opacity?: number;
+  radius?: boolean;
+  shadow?: ShapeShadow;
   textStyle: {
     opacity?: number;
     fontFamily?: string;

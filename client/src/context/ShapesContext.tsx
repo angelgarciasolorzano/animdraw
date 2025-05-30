@@ -1,6 +1,6 @@
 import React, { createContext, useCallback, useMemo, useState } from "react";
 import { ShapeData } from "@/types";
-import { createAnchors } from "@/utils";
+import { createAnchors, mergeShapeAttributes } from "@/utils";
 
 interface ShapesContextType {
   shapes: ShapeData[];
@@ -31,22 +31,9 @@ export function ShapesProvider({ children }: ShapesProviderProps) {
   }, []);
 
   const updateShapeAttributes = useCallback((shapeId: ShapeData["id"], attributes: Partial<ShapeData>) => {
-    setShapes(prevShapes => prevShapes.map(shape => {
-      if (shape.id !== shapeId) return shape;
-
-      if (attributes.textStyle) {
-        return {
-          ...shape,
-          ...attributes,
-          textStyle: {
-            ...shape.textStyle,
-            ...attributes.textStyle
-          }
-        }
-      };
-
-      return {...shape, ...attributes};
-    }))
+    setShapes(prevShapes => prevShapes.map((shape) => (
+      shape.id === shapeId ? mergeShapeAttributes(shape, attributes) : shape
+    )));
   }, []);
 
   const removeShape = useCallback((shapeId: ShapeData["id"]) => {

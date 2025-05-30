@@ -91,6 +91,8 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
             width={shape.width}
             height={shape.height}
             fill={shape.fill}
+            opacity={shape.opacity ?? 1}
+            cornerRadius={shape.radius ? 10 : undefined }
             {...shapeStyle}
           />
         )}

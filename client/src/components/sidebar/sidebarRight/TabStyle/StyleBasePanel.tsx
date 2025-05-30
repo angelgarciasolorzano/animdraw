@@ -7,20 +7,31 @@ import {
 } from "@/components/ui/carousel";
 
 import { cn } from "@/lib/utils";
+import { ShapeData } from "@/types";
 import { carouselItems } from "./item";
 
-function StyleBasePanel() {
+interface StyleBasePanelProps {
+  shape: ShapeData | null | undefined;
+  handleSimplePropertyChange: <T extends keyof Omit<ShapeData, 'shadow' | 'textStyle'>>(
+    property: T,
+    value: ShapeData[T]
+  ) => void;
+};
+
+function StyleBasePanel({ shape, handleSimplePropertyChange }: StyleBasePanelProps) {
   return (
     <div className="grid gap-3 w-full">
-      <StylePadding />
-      <StyleFill />
-      <StyleOpacity />
-      <StyleRounded />
+      <StylePadding handleSimplePropertyChange={handleSimplePropertyChange}/>
+      <StyleFill shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
+      <StyleOpacity shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
+      <StyleRounded shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
     </div>
   )
 };
 
-function StylePadding() {
+type StylePaddingProps = Pick<StyleBasePanelProps, "handleSimplePropertyChange">;
+
+function StylePadding({ handleSimplePropertyChange }: StylePaddingProps) {
   return (
     <div className="w-full flex justify-center">
       <Carousel className="w-[70%]">
@@ -32,6 +43,7 @@ function StylePadding() {
                   <button 
                     title={item.title}
                     key={`${carousel.id}-${index}`}
+                    onClick={() => handleSimplePropertyChange("fill", item.value)}
                     className={cn(
                       "w-8 h-5 cursor-pointer border",
                       item.bgColor, item.borderColor
@@ -50,7 +62,9 @@ function StylePadding() {
   )
 };
 
-function StyleFill() {
+type StyleFillProps = StyleBasePanelProps;
+
+function StyleFill({ shape, handleSimplePropertyChange }: StyleFillProps) {
   return (
     <div className="w-full flex justify-between mt-2 items-center">
       <label htmlFor="style-fill-color" className="text-xs font-medium">
@@ -61,12 +75,16 @@ function StyleFill() {
         id="style-fill-color"
         type="color" 
         className="w-24 h-8 border-gray-300"
+        value={shape?.fill || "#000000"}
+        onChange={(e) => handleSimplePropertyChange("fill", e.target.value)}
       />
     </div>
   )
 };
 
-function StyleOpacity() {
+type StyleOpacityProps = StyleBasePanelProps;
+
+function StyleOpacity({ shape, handleSimplePropertyChange }: StyleOpacityProps) {
   return (
     <div className="flex items-center justify-between w-full">
       <label 
@@ -83,18 +101,24 @@ function StyleOpacity() {
         step={0.1}
         min={0}
         max={1}
+        value={shape?.opacity ?? 1}
+        onChange={(e) => handleSimplePropertyChange("opacity", parseFloat(e.target.value))}
       />
     </div>
   )
 };
 
-function StyleRounded() {
+type StyleRoundedProps = StyleBasePanelProps;
+
+function StyleRounded({ shape, handleSimplePropertyChange }: StyleRoundedProps) {
   return (
     <div className="w-full">
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="style-rounded"
           className="border-gray-300"
+          checked={shape?.radius || false}
+          onCheckedChange={(checked) => handleSimplePropertyChange("radius", !!checked)}
         />
 
         <label htmlFor="style-rounded" className="text-xs font-semibold">
