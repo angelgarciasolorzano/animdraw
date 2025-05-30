@@ -12,6 +12,13 @@ export interface ShapeShadow {
   opacity?: number;
 };
 
+export interface ShapeStroke {
+  isActive?: boolean;
+  stroke?: string;
+  strokeWidth?: number;
+  dash?: number[];
+};
+
 export interface ShapeData {
   id: string;
   type: "rect" | "ellipse";
@@ -19,6 +26,7 @@ export interface ShapeData {
   y: number;
   width: number;
   height: number;
+  line?: ShapeStroke;
   fill: string;
   stroke: string;
   strokeWidth: number;

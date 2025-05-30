@@ -5,15 +5,18 @@ import { motion, AnimatePresence } from "motion/react";
 import { IoCheckmark } from "react-icons/io5";
 import { ChevronDownIcon } from "lucide-react";
 
-type SelectProps = React.ComponentProps<"div">;
+type SelectProps = React.ComponentProps<"div"> & {
+  disabled?: boolean;
+};
 
-function Select({ children, className, ...props }: SelectProps) {
+function Select({ children, className, disabled, ...props }: SelectProps) {
   return (
     <div 
       className={cn(
         "w-full relative",
         className
       )}
+      data-disabled={disabled}
       {...props}
     >
       {children}
@@ -21,21 +24,23 @@ function Select({ children, className, ...props }: SelectProps) {
   )
 };
 
-type SelectTriggerProps = React.ComponentProps<"button"> & {
+type SelectTriggerProps = React.ComponentProps<"button"> & Pick<SelectProps, "disabled"> & {
   isOpen: boolean;
   onToggle: () => void;
 };
 
-function SelectTrigger({ isOpen, onToggle, className, children, ...props }: SelectTriggerProps) {
+function SelectTrigger({ isOpen, onToggle, className, disabled, children, ...props }: SelectTriggerProps) {
   return (
     <button
       className={cn(
         "w-full flex items-center justify-between gap-3 px-3 border rounded-md py-2 cursor-pointer",
         "shadow-xs border-gray-300",
+        disabled && "cursor-default pointer-events-none opacity-50",
         className
       )}
       aria-expanded={isOpen}
       onClick={onToggle}
+      disabled={disabled}
       {...props}
     >
       {children}
@@ -60,9 +65,7 @@ function SelectValue({ children, className, ...props }: SelectValueProps) {
   )
 };
 
-interface SelectContentProps {
-  isOpen: boolean;
-  children: React.ReactNode;
+type SelectContentProps = Pick<SelectTriggerProps, "isOpen"> & React.PropsWithChildren & {
   className?: string;
 };
 

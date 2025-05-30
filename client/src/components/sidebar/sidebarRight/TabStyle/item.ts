@@ -52,24 +52,28 @@ export const carouselItems: CarouselIetm[] = [
 ];
 
 export type LineOptions = Pick<CarouselIetm, "id"> & {
-  value: string;
+  name: string;
+  value: number[];
   className: string;
 };
 
 export const options: LineOptions[] = [
   { 
-    id: "continuous", 
-    value: "Continua", 
+    id: "continuous",
+    name: "Continua",
+    value: [0, 0], 
     className: "w-full h-1 bg-black"
   },
   { 
     id: "dashed", 
-    value: "Discontinua",
+    name: "Discontinua",
+    value: [10, 25],
     className: "w-full h-1 border-2 border-dashed bg-black"
   },
   { 
     id: "dotted", 
-    value: "Punteada",
+    name: "Punteada",
+    value: [10, 10],
     className: "w-full h-1 border-2 border-dotted bg-black"
   },
 ];

@@ -3,7 +3,6 @@ import { useClickOutside } from "@react-hooks-library/core";
 
 import { ShapeData } from "@/types";
 import { useDiagram, useShape } from "@/hooks";
-import { LineOptions, options } from "./item";
 
 import StyleBasePanel from "./StyleBasePanel";
 import StyleBorderPanel from "./StyleBorderPanel";
@@ -14,7 +13,6 @@ function StyleTab() {
   const { getShapeById, updateShapeAttributes } = useShape();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<LineOptions>(options[0]);
   const ref = useRef(null);
 
   const shape = useMemo(() => {
@@ -23,13 +21,8 @@ function StyleTab() {
 
   useClickOutside(ref, () => setIsOpen(false));
 
-  const handleSelected = (option: LineOptions) => {
-    setSelected(option);
-    setIsOpen(false);
-  };
-
   const handleNestedPropertyChange = <
-    T extends keyof Pick<ShapeData, "textStyle" | "shadow">,
+    T extends keyof Pick<ShapeData, "textStyle" | "shadow" | "line">,
     k extends keyof NonNullable<ShapeData[T]>
   >(property: T, key: k, value: NonNullable<ShapeData[T]>[k]) => {
     if (!shape) return;
@@ -56,12 +49,13 @@ function StyleTab() {
   return (
     <div className="flex flex-col gap-3 items-center mx-2.5 mt-2.5">
       <StyleBasePanel shape={shape} handleSimplePropertyChange={handleSimplePropertyChange}/>
+      
       <StyleBorderPanel 
-        isOpen={isOpen} 
-        selected={selected} 
+        isOpen={isOpen}  
         ref={ref} 
         setIsOpen={setIsOpen} 
-        handleSelected={handleSelected} 
+        shape={shape}
+        handleNestedPropertyChange={handleNestedPropertyChange}
       />
       <StyleShadowPanel />
     </div>
