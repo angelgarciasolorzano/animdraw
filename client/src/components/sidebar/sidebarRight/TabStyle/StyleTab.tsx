@@ -57,7 +57,8 @@ function StyleTab() {
         shape={shape}
         handleNestedPropertyChange={handleNestedPropertyChange}
       />
-      <StyleShadowPanel />
+      
+      <StyleShadowPanel shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
     </div>
   )
 };

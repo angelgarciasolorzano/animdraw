@@ -1,24 +1,42 @@
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { cn } from "@/lib/utils";
 
-function StyleShadowPanel() {
+import { cn } from "@/lib/utils";
+import { ShapeData } from "@/types";
+
+interface StyleShadowPanelProps {
+  shape: ShapeData | null | undefined;
+  handleNestedPropertyChange: <
+    T extends keyof Pick<ShapeData, "shadow">,
+    k extends keyof NonNullable<ShapeData[T]>
+  >(
+    property: T, 
+    key: k, 
+    value: NonNullable<ShapeData[T]>[k]
+  ) => void;
+};
+
+function StyleShadowPanel({ shape, handleNestedPropertyChange }: StyleShadowPanelProps) {
   return (
     <div className="grid gap-3 w-full mt-2">
-      <StyleShadow />
-      <StyleBlurShadow />
-      <StyleOpacityShadow />
+      <StyleShadow shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <StyleBlurShadow shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <StyleOpacityShadow shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
     </div>
   )
 };
 
-function StyleShadow() {
+type StyleShadowProps = StyleShadowPanelProps;
+
+function StyleShadow({ shape, handleNestedPropertyChange }: StyleShadowProps) {
   return (
     <div className="flex justify-between w-full">
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="style-shadow" 
           className="border-gray-300"
+          checked={shape?.shadow?.isActive || false}
+          onCheckedChange={(checked) => handleNestedPropertyChange("shadow", "isActive", !!checked)}
         />
 
         <label htmlFor="style-shadow" className="text-xs font-semibold">
@@ -29,18 +47,24 @@ function StyleShadow() {
       <Input 
         type="color" 
         className="w-24 h-8 border-gray-300"
+        value={shape?.shadow?.color || "#000000"}
+        disabled={!shape?.shadow?.isActive}
+        onChange={(e) => handleNestedPropertyChange("shadow", "color", e.target.value)}
       />
     </div>
   )
 };
 
-function StyleBlurShadow() {
+type StyleBlurShadowProps = StyleShadowPanelProps;
+
+function StyleBlurShadow({ shape, handleNestedPropertyChange }: StyleBlurShadowProps) {
   return (
     <div className="flex items-center justify-between w-full">
       <label 
         htmlFor="style-shadow-blur"
         className={cn(
           "text-xs font-semibold",
+          !shape?.shadow?.isActive && "text-gray-500"
         )}
       >
         Difuminado de sombra
@@ -49,20 +73,26 @@ function StyleBlurShadow() {
       <Input
         id="style-shadow-blur"
         type="number"
-        min={0}
         className="w-16 border-gray-300 h-8"
+        min={0}
+        disabled={!shape?.shadow?.isActive}
+        value={shape?.shadow?.blur ?? 3}
+        onChange={(e) => handleNestedPropertyChange("shadow", "blur", parseInt(e.target.value))}
       />
     </div>
   )
 };
 
-function StyleOpacityShadow() {
+type StyleOpacityShadowProps = StyleShadowPanelProps;
+
+function StyleOpacityShadow({ shape, handleNestedPropertyChange }: StyleOpacityShadowProps) {
   return (
     <div className="flex items-center justify-between w-full">
       <label 
         htmlFor="style-shadow-opacity"
         className={cn(
           "text-xs font-semibold",
+          !shape?.shadow?.isActive && "text-gray-500"
         )}
       >
         Opacidad de sombra
@@ -75,6 +105,9 @@ function StyleOpacityShadow() {
         step={0.1}
         min={0}
         max={1}
+        disabled={!shape?.shadow?.isActive}
+        value={shape?.shadow?.opacity ?? 1}
+        onChange={(e) => handleNestedPropertyChange("shadow", "opacity", parseFloat(e.target.value))}
       />
     </div>
   )

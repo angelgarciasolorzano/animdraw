@@ -65,8 +65,8 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
   const shapeStyle = useMemo(() => ({
     //stroke: isSelected ? "#3b82f6" : shape.stroke,
     //strokeWidth: isSelected ? 3 : shape.strokeWidth,
-    shadowColor: shapeConnections.length > 0 ? "#3b82f6" : undefined,
-    shadowBlur: shapeConnections.length > 0 ? 10 : 0
+    //shadowColor: shapeConnections.length > 0 ? "#3b82f6" : undefined,
+    //shadowBlur: shapeConnections.length > 0 ? 10 : 0
   }), [isSelected, shape.stroke, shape.strokeWidth, shapeConnections]);
 
   return (
@@ -97,6 +97,9 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
             stroke={shape.line?.stroke || "#000000"}
             strokeWidth={shape.line?.strokeWidth || 1}
             strokeEnabled={shape.line?.isActive ?? true}
+            shadowColor={shape.shadow?.color ? shape.shadow?.color : undefined}
+            shadowBlur={shape.shadow?.isActive ? shape.shadow?.blur ?? 3 : 0}
+            shadowOpacity={shape.shadow?.isActive ? shape.shadow?.opacity ?? 1 : 0}
             {...shapeStyle}
           />
         )}
