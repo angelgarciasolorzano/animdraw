@@ -35,7 +35,7 @@ function SidebarRight() {
   }, [shape, updateShapeAttributes]);
 
   return (
-    <div className="w-64 bg-white border-l border-gray-300">
+    <div className="w-64 border-l border-gray-300">
       <Tabs 
         defaultValue="estilo" 
         value={activeTap}
@@ -48,8 +48,10 @@ function SidebarRight() {
               value={option.value}
               disabled={option.value === "texto" && !selectedShapeId} 
               className={cn(
-                "rounded-none h-full border-gray-300",
+                "rounded-none h-full border-gray-300 border-t-transparent",
                 "data-[state=active]:shadow-none data-[state=active]:border-b-transparent",
+                "dark:border-border dark:data-[state=inactive]:bg-background/30",
+                "dark:data-[state=active]:bg-background dark:data-[state=active]:border-b-transparent",
                 option.className
               )}
             >
@@ -57,9 +59,11 @@ function SidebarRight() {
             </TabsTrigger>
           ))}
         </TabsList>
+
         <TabsContent value="estilo">
           <StyleTab />
         </TabsContent>
+        
         <TabsContent value="texto">
           <TextTab
             shape={shape}

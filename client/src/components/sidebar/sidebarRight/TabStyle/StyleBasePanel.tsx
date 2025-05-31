@@ -72,8 +72,8 @@ function StylePadding({ updatePadding }: StylePaddingProps) {
           ))}
         </CarouselContent>
 
-        <CarouselPrevious className="w-5 h-5 -left-8 border-gray-300" />
-        <CarouselNext className="w-5 h-5 -right-8 border-gray-300" />
+        <CarouselPrevious className="w-5 h-5 -left-8" />
+        <CarouselNext className="w-5 h-5 -right-8" />
       </Carousel>
     </div>
   )
@@ -84,14 +84,14 @@ type StyleFillProps = Omit<StyleBasePanelProps, "handleNestedPropertyChange">;
 function StyleFill({ shape, handleSimplePropertyChange }: StyleFillProps) {
   return (
     <div className="w-full flex justify-between mt-2 items-center">
-      <label htmlFor="style-fill-color" className="text-xs font-medium">
+      <label htmlFor="style-fill-color" className="text-xs font-medium dark:text-gray-200">
         Relleno
       </label>
 
       <Input 
         id="style-fill-color"
         type="color" 
-        className="w-24 h-8 border-gray-300"
+        className="w-24 h-8"
         value={shape?.fill || "#000000"}
         onChange={(e) => handleSimplePropertyChange("fill", e.target.value)}
       />
@@ -106,7 +106,7 @@ function StyleOpacity({ shape, handleSimplePropertyChange }: StyleOpacityProps) 
     <div className="flex items-center justify-between w-full">
       <label 
         htmlFor="style-opacity"
-        className="text-xs font-semibold"
+        className="text-xs font-semibold dark:text-gray-200"
       >
         Opacidad
       </label>
@@ -114,7 +114,7 @@ function StyleOpacity({ shape, handleSimplePropertyChange }: StyleOpacityProps) 
       <Input
         id="style-opacity"
         type="number"
-        className="w-16 border-gray-300 h-8"
+        className="w-16 h-8"
         step={0.1}
         min={0}
         max={1}
@@ -135,12 +135,11 @@ function StyleRounded({ shape, handleSimplePropertyChange }: StyleRoundedProps) 
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="style-rounded"
-          className="border-gray-300"
           checked={shape?.radius || false}
           onCheckedChange={(checked) => handleSimplePropertyChange("radius", !!checked)}
         />
 
-        <label htmlFor="style-rounded" className="text-xs font-semibold">
+        <label htmlFor="style-rounded" className="text-xs font-semibold dark:text-gray-200">
           Redondeado
         </label>
       </div>

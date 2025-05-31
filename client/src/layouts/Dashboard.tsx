@@ -10,7 +10,7 @@ function Dashboard() {
           <div className="flex flex-col h-screen">
             <Header />
 
-            <div className="flex flex-1 bg-amber-200">
+            <div className="flex flex-1">
               <SidebarLeft />
               <Main  />
               <SidebarRight />

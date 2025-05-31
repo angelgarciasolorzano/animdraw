@@ -1,8 +1,11 @@
 import { Dashboard } from "@/layouts";
+import { ThemeProvider } from "./context";
 
 function App() {
   return (
-    <Dashboard />
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+      <Dashboard />
+    </ThemeProvider>
   )
 }
 

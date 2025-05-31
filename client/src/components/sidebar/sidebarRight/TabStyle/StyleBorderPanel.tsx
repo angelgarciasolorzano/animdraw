@@ -64,19 +64,18 @@ function StyleLineColor({ shape, lineIsActive, handleNestedPropertyChange }: Sty
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="style-line"
-          className="border-gray-300"
           checked={shape?.line?.isActive ?? true}
           onCheckedChange={(checked) => handleNestedPropertyChange("line", "isActive", !!checked)}
         />
 
-        <label htmlFor="style-line" className="text-xs font-semibold">
+        <label htmlFor="style-line" className="text-xs font-semibold dark:text-gray-200">
           Linea
         </label>
       </div>
 
       <Input 
         type="color" 
-        className="w-24 h-8 border-gray-300"
+        className="w-24 h-8"
         value={shape?.line?.stroke || "#000000"}
         disabled={lineIsActive}
         onChange={(e) => handleNestedPropertyChange("line", "stroke", e.target.value)}
@@ -132,7 +131,7 @@ function StyleLine(props: StyleLineProps) {
 
       <Input
         type="number"
-        className="w-22 border-gray-300 h-8.5"
+        className="w-22 h-8.5"
         min={1}
         value={shape?.line?.strokeWidth || 1}
         disabled={lineIsActive}

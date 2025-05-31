@@ -32,19 +32,18 @@ function TextShadow({ shape, handleTextStyleChange }: TextShadowProps) {
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="shadow" 
-          className="border-gray-300"
           checked={shape?.textStyle?.hasShadow || false}
           onCheckedChange={(checked) => handleTextStyleChange("hasShadow", checked)}
         />
 
-        <label htmlFor="shadow" className="text-xs font-semibold">
+        <label htmlFor="shadow" className="text-xs font-semibold dark:text-gray-200">
           Sombra
         </label>
       </div>
 
       <Input 
         type="color" 
-        className="w-24 h-8 border-gray-300"
+        className="w-24 h-8"
         value={shape?.textStyle?.shadowColor || "#000000"}
         disabled={!shape?.textStyle?.hasShadow}
         onChange={(e) => handleTextStyleChange("shadowColor", e.target.value)}
@@ -61,8 +60,8 @@ function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
       <label 
         htmlFor="shadow-blur"
         className={cn(
-          "text-xs font-semibold",
-          !shape?.textStyle?.hasShadow && "text-gray-500"
+          "text-xs font-semibold dark:text-gray-200",
+          !shape?.textStyle?.hasShadow && "text-gray-500 dark:text-gray-400"
         )}
       >
         Difuminado de sombra
@@ -71,7 +70,7 @@ function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
       <Input
         id="shadow-blur"
         type="number"
-        className="w-16 border-gray-300 h-8"
+        className="w-16 h-8"
         disabled={!shape?.textStyle?.hasShadow}
         min={0}
         value={shape?.textStyle?.shadowBlur ?? 3}
@@ -89,8 +88,8 @@ function TextOpacityShadow({ shape, handleTextStyleChange }: TextOpacityShadowPr
       <label 
         htmlFor="shadow-opacity"
         className={cn(
-          "text-xs font-semibold",
-          !shape?.textStyle?.hasShadow && "text-gray-500"
+          "text-xs font-semibold dark:text-gray-200",
+          !shape?.textStyle?.hasShadow && "text-gray-500 dark:text-gray-400"
         )}
       >
         Opacidad de sombra
@@ -99,7 +98,7 @@ function TextOpacityShadow({ shape, handleTextStyleChange }: TextOpacityShadowPr
       <Input
         id="shadow-opacity"
         type="number"
-        className="w-16 border-gray-300 h-8"
+        className="w-16 h-8"
         step={0.1}
         min={0}
         max={1}

@@ -34,19 +34,18 @@ function StyleShadow({ shape, handleNestedPropertyChange }: StyleShadowProps) {
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="style-shadow" 
-          className="border-gray-300"
           checked={shape?.shadow?.isActive || false}
           onCheckedChange={(checked) => handleNestedPropertyChange("shadow", "isActive", !!checked)}
         />
 
-        <label htmlFor="style-shadow" className="text-xs font-semibold">
+        <label htmlFor="style-shadow" className="text-xs font-semibold dark:text-gray-200">
           Sombra
         </label>
       </div>
 
       <Input 
         type="color" 
-        className="w-24 h-8 border-gray-300"
+        className="w-24 h-8"
         value={shape?.shadow?.color || "#000000"}
         disabled={!shape?.shadow?.isActive}
         onChange={(e) => handleNestedPropertyChange("shadow", "color", e.target.value)}
@@ -63,8 +62,8 @@ function StyleBlurShadow({ shape, handleNestedPropertyChange }: StyleBlurShadowP
       <label 
         htmlFor="style-shadow-blur"
         className={cn(
-          "text-xs font-semibold",
-          !shape?.shadow?.isActive && "text-gray-500"
+          "text-xs font-semibold dark:text-gray-200",
+          !shape?.shadow?.isActive && "text-gray-500 dark:text-gray-400"
         )}
       >
         Difuminado de sombra
@@ -73,7 +72,7 @@ function StyleBlurShadow({ shape, handleNestedPropertyChange }: StyleBlurShadowP
       <Input
         id="style-shadow-blur"
         type="number"
-        className="w-16 border-gray-300 h-8"
+        className="w-16 h-8"
         min={0}
         disabled={!shape?.shadow?.isActive}
         value={shape?.shadow?.blur ?? 3}
@@ -91,8 +90,8 @@ function StyleOpacityShadow({ shape, handleNestedPropertyChange }: StyleOpacityS
       <label 
         htmlFor="style-shadow-opacity"
         className={cn(
-          "text-xs font-semibold",
-          !shape?.shadow?.isActive && "text-gray-500"
+          "text-xs font-semibold dark:text-gray-200",
+          !shape?.shadow?.isActive && "text-gray-500 dark:text-gray-400"
         )}
       >
         Opacidad de sombra
@@ -101,7 +100,7 @@ function StyleOpacityShadow({ shape, handleNestedPropertyChange }: StyleOpacityS
       <Input
         id="style-shadow-opacity"
         type="number"
-        className="w-16 border-gray-300 h-8"
+        className="w-16 h-8"
         step={0.1}
         min={0}
         max={1}

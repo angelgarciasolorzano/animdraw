@@ -26,7 +26,7 @@ function SidebarLeft() {
   };
 
   return (
-    <div className="w-48 bg-white border-r border-gray-200">
+    <div className="w-48 border-r border-gray-300">
       {sidebarItem.map((section) => (
         <SidebarSection 
           key={section.value} 
@@ -52,8 +52,9 @@ function SidebarSection({ title, value, icon, onAddShape }: SidebarSectionProps)
     <div className="m-1">
       <Accordion type="single" collapsible>
         <AccordionItem value={value}>
-          <AccordionTrigger className="px-1.5 py-2 rounded-sm hover:text-blue-700 
-            hover:bg-blue-500/10 hover:no-underline"
+          <AccordionTrigger className="px-1.5 py-2 rounded-sm hover:text-gray-800
+            hover:bg-gray-200 hover:no-underline dark:text-gray-200 dark:hover:bg-gray-500/20
+            dark:hover:text-gray-400"
           >
             {title}
           </AccordionTrigger>
@@ -80,7 +81,7 @@ function SidebarTooltip({ icon, onAddShape }: SidebarIconsProps) {
             <Tooltip key={index}>
               <TooltipTrigger asChild>
                 <Icon 
-                  className="cursor-pointer" 
+                  className="cursor-pointer dark:text-gray-300" 
                   onClick={() => onAddShape(type, x, y, width, height)} 
                 />
               </TooltipTrigger>

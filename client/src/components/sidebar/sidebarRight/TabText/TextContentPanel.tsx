@@ -11,13 +11,13 @@ function TextContentPanel(props: TextContentPanelProps) {
   
   return (
     <div className="grid gap-1.5">
-      <label htmlFor="text-content" className="text-xs font-semibold">
+      <label htmlFor="text-content" className="text-xs font-semibold dark:text-gray-200">
         Contenido
       </label>
 
       <Textarea 
         id="text-content"
-        className="resize-none h-24 border-gray-300"
+        className="resize-none h-24"
         value={shape?.text || ""}
         onChange={(e) => {
           if (!shape) return null;

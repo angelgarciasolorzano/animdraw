@@ -41,7 +41,7 @@ type TextFontProps = TextStylePanelProps;
 
 function TextTitle() {
   return (
-    <h3 className="text-sm font-semibold">
+    <h3 className="text-sm font-semibold dark:text-gray-200">
       Fuente
     </h3>
   )
@@ -54,7 +54,7 @@ function TextFont({ shape, handleTextStyleChange }: TextFontProps) {
         value={shape?.textStyle?.fontFamily || "Arial"}
         onValueChange={(value) => handleTextStyleChange("fontFamily", value)}
       >
-        <SelectTrigger className="w-full mt-1.5 border-gray-300">
+        <SelectTrigger className="w-full mt-1.5">
           <SelectValue placeholder="Arial" />
         </SelectTrigger>
 
@@ -97,7 +97,7 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
                           handleTextStyleChange(prop, pressed ? activeValue : inactiveValue)
                         )}
                       >
-                        <Icon />
+                        <Icon className="dark:text-gray-200" />
                       </Toggle>
                     </div>
                   </TooltipTrigger>
@@ -113,7 +113,7 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
       </div>
 
       <Input 
-        className="w-16 border-gray-300" 
+        className="w-16" 
         type="number" 
         value={shape?.textStyle?.fontSize || 15}
         onChange={(e) => (
@@ -146,7 +146,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                         handleTextStyleChange("align", pressed ? value : inactiveValue)
                       )}
                     >
-                      <Icon />
+                      <Icon className="dark:text-gray-200" />
                     </Toggle>
                   </div>
                 </TooltipTrigger>
@@ -175,7 +175,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                         handleTextStyleChange("verticalAlign", pressed ? value : inactiveValue)
                       )}
                     >
-                      <Icon />
+                      <Icon className="dark:text-gray-200" />
                     </Toggle>
                   </div>
                 </TooltipTrigger>
@@ -197,14 +197,14 @@ type TextColorProps = TextStylePanelProps;
 function TextColor({ shape, handleTextStyleChange }: TextColorProps) {
   return (
     <div className="flex justify-between mt-2 items-center">
-      <label htmlFor="text-color" className="text-xs font-medium">
+      <label htmlFor="text-color" className="text-xs font-medium dark:text-gray-200">
         Color de la fuente
       </label>
 
       <Input 
         id="text-color"
         type="color" 
-        className="w-24 h-8 border-gray-300"
+        className="w-24 h-8"
         value={shape?.textStyle?.color || "#000000"}
         onChange={(e) => handleTextStyleChange("color", e.target.value)}
       />
@@ -219,7 +219,7 @@ function TextOpacity({ shape, handleTextStyleChange }: TextOpacityProps) {
     <div className="flex items-center mt-2 justify-between">
       <label 
         htmlFor="text-opacity"
-        className="text-xs font-semibold"
+        className="text-xs font-semibold dark:text-gray-200"
       >
         Opacidad de texto
       </label>
@@ -227,7 +227,7 @@ function TextOpacity({ shape, handleTextStyleChange }: TextOpacityProps) {
       <Input
         id="text-opacity"
         type="number"
-        className="w-16 border-gray-300 h-8"
+        className="w-16 h-8"
         step={0.1}
         min={0}
         max={1}
