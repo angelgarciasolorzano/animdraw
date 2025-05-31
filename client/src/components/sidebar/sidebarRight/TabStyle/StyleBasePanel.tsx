@@ -8,7 +8,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { ShapeData } from "@/types";
-import { carouselItems } from "./item";
+import { carouselItems, ColorsItems } from "./item";
 
 interface StyleBasePanelProps {
   shape: ShapeData | null | undefined;
@@ -16,12 +16,27 @@ interface StyleBasePanelProps {
     property: T,
     value: ShapeData[T]
   ) => void;
+  handleNestedPropertyChange: <
+    T extends keyof Pick<ShapeData, "line">,
+    k extends keyof NonNullable<ShapeData[T]>
+  >(
+    property: T, 
+    key: k, 
+    value: NonNullable<ShapeData[T]>[k]
+  ) => void;
 };
 
-function StyleBasePanel({ shape, handleSimplePropertyChange }: StyleBasePanelProps) {
+function StyleBasePanel(props: StyleBasePanelProps) {
+  const { shape, handleSimplePropertyChange, handleNestedPropertyChange } = props;
+
+  const updatePadding = (value: ColorsItems) => {
+    handleSimplePropertyChange("fill", value.valueBgColor);
+    handleNestedPropertyChange("line", "stroke", value.valueBorderColor);
+  };
+
   return (
     <div className="grid gap-3 w-full">
-      <StylePadding handleSimplePropertyChange={handleSimplePropertyChange}/>
+      <StylePadding updatePadding={updatePadding}/>
       <StyleFill shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
       <StyleOpacity shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
       <StyleRounded shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
@@ -29,9 +44,11 @@ function StyleBasePanel({ shape, handleSimplePropertyChange }: StyleBasePanelPro
   )
 };
 
-type StylePaddingProps = Pick<StyleBasePanelProps, "handleSimplePropertyChange">;
+interface StylePaddingProps {
+  updatePadding: (value: ColorsItems) => void;
+};
 
-function StylePadding({ handleSimplePropertyChange }: StylePaddingProps) {
+function StylePadding({ updatePadding }: StylePaddingProps) {
   return (
     <div className="w-full flex justify-center">
       <Carousel className="w-[70%]">
@@ -43,7 +60,7 @@ function StylePadding({ handleSimplePropertyChange }: StylePaddingProps) {
                   <button 
                     title={item.title}
                     key={`${carousel.id}-${index}`}
-                    onClick={() => handleSimplePropertyChange("fill", item.value)}
+                    onClick={() => updatePadding(item)}
                     className={cn(
                       "w-8 h-5 cursor-pointer border",
                       item.bgColor, item.borderColor
@@ -62,7 +79,7 @@ function StylePadding({ handleSimplePropertyChange }: StylePaddingProps) {
   )
 };
 
-type StyleFillProps = StyleBasePanelProps;
+type StyleFillProps = Omit<StyleBasePanelProps, "handleNestedPropertyChange">;
 
 function StyleFill({ shape, handleSimplePropertyChange }: StyleFillProps) {
   return (
@@ -82,7 +99,7 @@ function StyleFill({ shape, handleSimplePropertyChange }: StyleFillProps) {
   )
 };
 
-type StyleOpacityProps = StyleBasePanelProps;
+type StyleOpacityProps = Omit<StyleBasePanelProps, "handleNestedPropertyChange">;
 
 function StyleOpacity({ shape, handleSimplePropertyChange }: StyleOpacityProps) {
   return (
@@ -108,9 +125,11 @@ function StyleOpacity({ shape, handleSimplePropertyChange }: StyleOpacityProps) 
   )
 };
 
-type StyleRoundedProps = StyleBasePanelProps;
+type StyleRoundedProps = Omit<StyleBasePanelProps, "handleNestedPropertyChange">;
 
 function StyleRounded({ shape, handleSimplePropertyChange }: StyleRoundedProps) {
+  if (shape?.type !== "rect") return null;
+
   return (
     <div className="w-full">
       <div className="flex items-center space-x-2">

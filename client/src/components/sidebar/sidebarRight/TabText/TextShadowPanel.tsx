@@ -73,6 +73,7 @@ function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
         type="number"
         className="w-16 border-gray-300 h-8"
         disabled={!shape?.textStyle?.hasShadow}
+        min={0}
         value={shape?.textStyle?.shadowBlur ?? 3}
         onChange={(e) => handleTextStyleChange("shadowBlur", parseInt(e.target.value))}
       />

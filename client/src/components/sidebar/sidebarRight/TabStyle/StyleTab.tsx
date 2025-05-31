@@ -48,7 +48,11 @@ function StyleTab() {
 
   return (
     <div className="flex flex-col gap-3 items-center mx-2.5 mt-2.5">
-      <StyleBasePanel shape={shape} handleSimplePropertyChange={handleSimplePropertyChange}/>
+      <StyleBasePanel 
+        shape={shape} 
+        handleSimplePropertyChange={handleSimplePropertyChange}
+        handleNestedPropertyChange={handleNestedPropertyChange}
+      />
       
       <StyleBorderPanel 
         isOpen={isOpen}  
