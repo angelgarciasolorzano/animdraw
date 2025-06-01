@@ -2,6 +2,7 @@ import { Layer, Stage } from "react-konva";
 import { useShape, useDiagram, useConnection } from "@/hooks";
 import { ConnectionLine, WithAnchors } from "./shape";
 import { cn } from "@/lib/utils";
+import Grid from "./Grid";
 
 function Main() {
   const { shapes } = useShape();
@@ -20,13 +21,23 @@ function Main() {
         <Stage
           width={canvasSize.width}
           height={canvasSize.height}
-          className={cn("bg-white shadow-md dark:bg-[#1f1f23]")}
+          className={cn("bg-white shadow-md dark:bg-[#242424]")}
           onClick={(e) => {
             if (e.target === e.target.getStage()) {
               deselectAll();
             }
           }}
         >
+          <Layer>
+            <Grid 
+              width={canvasSize.width} 
+              height={canvasSize.height}
+              gridSize={40}
+              gridColor="#d1d5db"
+              gridColorDark="#ffffff1a"
+            />
+          </Layer>
+          
           <Layer>
             {/* Renderizar todas las conexiones primero (debajo de las figuras) */}
             {connections.map(conn => {
