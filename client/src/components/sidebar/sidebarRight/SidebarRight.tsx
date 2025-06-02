@@ -6,8 +6,7 @@ import { useDiagram, useShape } from "@/hooks";
 import { ShapeData } from "@/types";
 
 import { sidebarTabOptions} from "./sidebarItem";
-import { TextTab } from "./TabText";
-import { StyleTab } from "./TabStyle";
+import { getSidebarTabsContent } from "./SidebarTabsContent";
 
 function SidebarRight() {
   const { selectedShapeId } = useDiagram();
@@ -33,6 +32,10 @@ function SidebarRight() {
       textStyle: { ...shape.textStyle, [key]: value }
     })
   }, [shape, updateShapeAttributes]);
+
+  const sidebarTabsContext = getSidebarTabsContent({
+    shape, handleTextStyleChange, updateShapeAttributes
+  });
 
   return (
     <div className="w-[264px] border-l border-gray-300 dark:border-border">
@@ -62,33 +65,19 @@ function SidebarRight() {
           ))}
         </TabsList>
 
-        <TabsContent value="estilo">
-          <div
-            className={cn(
-              "max-h-[calc(100vh-100px)] overflow-auto scrollbar-thin pb-2",
-              "scrollbar-track-transparent scrollbar-thumb-black/40",
-              "dark:scrollbar-thumb-gray-500/50"
-            )}
-          >
-            <StyleTab />
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="texto">
-          <div
-            className={cn(
-              "max-h-[calc(100vh-100px)] overflow-auto scrollbar-thin pb-2",
-              "scrollbar-track-transparent scrollbar-thumb-black/40",
-              "dark:scrollbar-thumb-gray-500/50"
-            )}
-          >
-            <TextTab
-              shape={shape}
-              handleTextStyleChange={handleTextStyleChange}
-              updateShapeAttributes={updateShapeAttributes}
-            />
-          </div>
-        </TabsContent>
+        {sidebarTabsContext.map(({ value, component }) => (
+          <TabsContent value={value} key={value}>
+            <div
+              className={cn(
+                "max-h-[calc(100vh-100px)] overflow-auto scrollbar-thin pb-2",
+                "scrollbar-track-transparent scrollbar-thumb-black/40",
+                "dark:scrollbar-thumb-gray-500/50"
+              )}
+            >
+              {component}
+            </div>
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   )
