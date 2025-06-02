@@ -38,7 +38,12 @@ function StyleShadow({ shape, handleNestedPropertyChange }: StyleShadowProps) {
           onCheckedChange={(checked) => handleNestedPropertyChange("shadow", "isActive", !!checked)}
         />
 
-        <label htmlFor="style-shadow" className="text-xs font-semibold dark:text-gray-200">
+        <label 
+          htmlFor="style-shadow" 
+          className={cn(
+            "text-xs text-black/90 font-semibold dark:text-gray-300"
+          )}
+        >
           Sombra
         </label>
       </div>
@@ -62,7 +67,7 @@ function StyleBlurShadow({ shape, handleNestedPropertyChange }: StyleBlurShadowP
       <label 
         htmlFor="style-shadow-blur"
         className={cn(
-          "text-xs font-semibold dark:text-gray-200",
+          "text-xs text-black/90 font-semibold dark:text-gray-300",
           !shape?.shadow?.isActive && "text-gray-500 dark:text-gray-400"
         )}
       >
@@ -90,7 +95,7 @@ function StyleOpacityShadow({ shape, handleNestedPropertyChange }: StyleOpacityS
       <label 
         htmlFor="style-shadow-opacity"
         className={cn(
-          "text-xs font-semibold dark:text-gray-200",
+          "text-xs text-black/90 font-semibold dark:text-gray-300",
           !shape?.shadow?.isActive && "text-gray-500 dark:text-gray-400"
         )}
       >

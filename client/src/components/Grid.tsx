@@ -1,5 +1,5 @@
-import { useTheme } from '@/hooks';
 import { Line } from 'react-konva';
+import { useTheme } from '@/hooks';
 
 interface GridProps {
   width: number;
@@ -9,7 +9,8 @@ interface GridProps {
   gridColorDark?: string;
 };
 
-function Grid({ width, height, gridSize = 10, gridColor = "#e0e0e0", gridColorDark }: GridProps) {
+function Grid(props: GridProps) {
+  const { width, height, gridSize = 10, gridColor = "#e0e0e0", gridColorDark } = props;
   const { theme } = useTheme();
 
   const gridLines = [];
@@ -19,7 +20,7 @@ function Grid({ width, height, gridSize = 10, gridColor = "#e0e0e0", gridColorDa
   for (let i = 0; i <= width; i += gridSize) {
     gridLines.push(
       <Line
-        key={`grid-line-${i}`}
+        key={`grid-line-vertical-${i}`}
         points={[i, 0, i, height]}
         stroke={strokeColor}
         strokeWidth={0.5}
@@ -30,7 +31,7 @@ function Grid({ width, height, gridSize = 10, gridColor = "#e0e0e0", gridColorDa
   for (let i = 0; i <= height; i += gridSize) {
     gridLines.push(
       <Line
-        key={`grid-line-${i}`}
+        key={`grid-line-horizontal-${i}`}
         points={[0, i, width, i]}
         stroke={strokeColor}
         strokeWidth={0.5}

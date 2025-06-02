@@ -3,6 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 import { useShape, useDiagram } from "@/hooks";
 import { sidebarItem, IconItem } from "./sidebarItem";
+import { cn } from "@/lib/utils";
 
 function SidebarLeft() {
   const { addShape } = useShape();
@@ -26,7 +27,7 @@ function SidebarLeft() {
   };
 
   return (
-    <div className="w-48 border-r border-gray-300">
+    <div className="w-48 border-r border-gray-300 dark:border-border">
       {sidebarItem.map((section) => (
         <SidebarSection 
           key={section.value} 
@@ -52,9 +53,11 @@ function SidebarSection({ title, value, icon, onAddShape }: SidebarSectionProps)
     <div className="m-1">
       <Accordion type="single" collapsible>
         <AccordionItem value={value}>
-          <AccordionTrigger className="px-1.5 py-2 rounded-sm hover:text-gray-800
-            hover:bg-gray-200 hover:no-underline dark:text-gray-200 dark:hover:bg-gray-500/20
-            dark:hover:text-gray-400"
+          <AccordionTrigger 
+            className={cn(
+              "px-1.5 py-2 rounded-sm text-black/90 hover:bg-gray-200 hover:no-underline",
+              "dark:text-[#fcfcfc] dark:hover:bg-gray-500/20"
+            )}
           >
             {title}
           </AccordionTrigger>
@@ -81,7 +84,7 @@ function SidebarTooltip({ icon, onAddShape }: SidebarIconsProps) {
             <Tooltip key={index}>
               <TooltipTrigger asChild>
                 <Icon 
-                  className="cursor-pointer dark:text-gray-300" 
+                  className="cursor-pointer text-gray-700 dark:text-gray-400" 
                   onClick={() => onAddShape(type, x, y, width, height)} 
                 />
               </TooltipTrigger>

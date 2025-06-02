@@ -13,7 +13,9 @@ function Main() {
     <div 
       ref={containerRef} 
       className={cn(
-        "flex-1 overflow-auto bg-gray-100 px-4 py-4",
+        "flex-1 overflow-auto bg-gray-100 px-28 py-28 scrollbar-thin",
+        "scrollbar-track-transparent scrollbar-thumb-black/40",
+        "dark:scrollbar-thumb-gray-500/50",
         "dark:bg-background"
       )}
     >
@@ -21,7 +23,7 @@ function Main() {
         <Stage
           width={canvasSize.width}
           height={canvasSize.height}
-          className={cn("bg-white shadow-md dark:bg-[#242424]")}
+          className={cn("bg-white shadow-md dark:bg-[#161616]/40")}
           onClick={(e) => {
             if (e.target === e.target.getStage()) {
               deselectAll();

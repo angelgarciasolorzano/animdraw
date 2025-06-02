@@ -35,7 +35,7 @@ function SidebarRight() {
   }, [shape, updateShapeAttributes]);
 
   return (
-    <div className="w-64 border-l border-gray-300">
+    <div className="w-64 border-l border-gray-300 dark:border-border">
       <Tabs 
         defaultValue="estilo" 
         value={activeTap}
@@ -52,6 +52,8 @@ function SidebarRight() {
                 "data-[state=active]:shadow-none data-[state=active]:border-b-transparent",
                 "dark:border-border dark:data-[state=inactive]:bg-background/30",
                 "dark:data-[state=active]:bg-background dark:data-[state=active]:border-b-transparent",
+                "dark:data-[state=active]:border-l-transparent dark:data-[state=active]:border-t-transparent",
+                "dark:data-[state=inactive]:border-t-transparent",
                 option.className
               )}
             >

@@ -15,7 +15,7 @@ function Header() {
   return (
     <div className={cn(
       "flex justify-between items-center py-2 px-4 border-b border-gray-300",
-      "dark:border-gray-700"
+      "dark:border-border"
     )}>
       <HeaderTitle />
       <HeaderTheme setTheme={setTheme} />

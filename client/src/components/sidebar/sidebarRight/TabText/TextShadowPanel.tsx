@@ -36,7 +36,12 @@ function TextShadow({ shape, handleTextStyleChange }: TextShadowProps) {
           onCheckedChange={(checked) => handleTextStyleChange("hasShadow", checked)}
         />
 
-        <label htmlFor="shadow" className="text-xs font-semibold dark:text-gray-200">
+        <label 
+          htmlFor="shadow" 
+          className={cn(
+            "text-xs text-black/90 font-semibold dark:text-gray-300",
+          )}
+        >
           Sombra
         </label>
       </div>
@@ -60,7 +65,7 @@ function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
       <label 
         htmlFor="shadow-blur"
         className={cn(
-          "text-xs font-semibold dark:text-gray-200",
+          "text-xs font-semibold text-black/90 dark:text-gray-300",
           !shape?.textStyle?.hasShadow && "text-gray-500 dark:text-gray-400"
         )}
       >
@@ -88,7 +93,7 @@ function TextOpacityShadow({ shape, handleTextStyleChange }: TextOpacityShadowPr
       <label 
         htmlFor="shadow-opacity"
         className={cn(
-          "text-xs font-semibold dark:text-gray-200",
+          "text-xs font-semibold text-black/90 dark:text-gray-300",
           !shape?.textStyle?.hasShadow && "text-gray-500 dark:text-gray-400"
         )}
       >

@@ -7,6 +7,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
+import { cn } from "@/lib/utils";
 import { ShapeData } from "@/types";
 
 import { 
@@ -41,7 +42,7 @@ type TextFontProps = TextStylePanelProps;
 
 function TextTitle() {
   return (
-    <h3 className="text-sm font-semibold dark:text-gray-200">
+    <h3 className="text-sm font-semibold text-black/90 dark:text-gray-300">
       Fuente
     </h3>
   )
@@ -97,7 +98,7 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
                           handleTextStyleChange(prop, pressed ? activeValue : inactiveValue)
                         )}
                       >
-                        <Icon className="dark:text-gray-200" />
+                        <Icon className="text-gray-700 dark:text-gray-400" />
                       </Toggle>
                     </div>
                   </TooltipTrigger>
@@ -146,7 +147,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                         handleTextStyleChange("align", pressed ? value : inactiveValue)
                       )}
                     >
-                      <Icon className="dark:text-gray-200" />
+                      <Icon className="text-gray-700 dark:text-gray-400" />
                     </Toggle>
                   </div>
                 </TooltipTrigger>
@@ -175,7 +176,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                         handleTextStyleChange("verticalAlign", pressed ? value : inactiveValue)
                       )}
                     >
-                      <Icon className="dark:text-gray-200" />
+                      <Icon className="text-gray-700 dark:text-gray-400" />
                     </Toggle>
                   </div>
                 </TooltipTrigger>
@@ -197,7 +198,12 @@ type TextColorProps = TextStylePanelProps;
 function TextColor({ shape, handleTextStyleChange }: TextColorProps) {
   return (
     <div className="flex justify-between mt-2 items-center">
-      <label htmlFor="text-color" className="text-xs font-medium dark:text-gray-200">
+      <label 
+        htmlFor="text-color" 
+        className={cn(
+          "text-xs text-black/90 font-semibold dark:text-gray-300",
+        )}
+      >
         Color de la fuente
       </label>
 
@@ -219,7 +225,9 @@ function TextOpacity({ shape, handleTextStyleChange }: TextOpacityProps) {
     <div className="flex items-center mt-2 justify-between">
       <label 
         htmlFor="text-opacity"
-        className="text-xs font-semibold dark:text-gray-200"
+        className={cn(
+          "text-xs text-black/90 font-semibold dark:text-gray-300"
+        )}
       >
         Opacidad de texto
       </label>

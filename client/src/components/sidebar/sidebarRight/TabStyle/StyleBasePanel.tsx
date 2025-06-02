@@ -84,7 +84,12 @@ type StyleFillProps = Omit<StyleBasePanelProps, "handleNestedPropertyChange">;
 function StyleFill({ shape, handleSimplePropertyChange }: StyleFillProps) {
   return (
     <div className="w-full flex justify-between mt-2 items-center">
-      <label htmlFor="style-fill-color" className="text-xs font-medium dark:text-gray-200">
+      <label 
+        htmlFor="style-fill-color" 
+        className={cn(
+          "text-xs text-black/90 font-semibold dark:text-gray-300"
+        )}
+      >
         Relleno
       </label>
 
@@ -106,7 +111,9 @@ function StyleOpacity({ shape, handleSimplePropertyChange }: StyleOpacityProps) 
     <div className="flex items-center justify-between w-full">
       <label 
         htmlFor="style-opacity"
-        className="text-xs font-semibold dark:text-gray-200"
+        className={cn(
+          "text-xs text-black/90 font-semibold dark:text-gray-300"
+        )}
       >
         Opacidad
       </label>
@@ -139,7 +146,12 @@ function StyleRounded({ shape, handleSimplePropertyChange }: StyleRoundedProps) 
           onCheckedChange={(checked) => handleSimplePropertyChange("radius", !!checked)}
         />
 
-        <label htmlFor="style-rounded" className="text-xs font-semibold dark:text-gray-200">
+        <label 
+          htmlFor="style-rounded" 
+          className={cn(
+            "text-xs text-black/90 font-semibold dark:text-gray-300"
+          )}
+        >
           Redondeado
         </label>
       </div>

@@ -1,4 +1,5 @@
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { ShapeData } from "@/types";
 
 interface TextContentPanelProps {
@@ -11,7 +12,12 @@ function TextContentPanel(props: TextContentPanelProps) {
   
   return (
     <div className="grid gap-1.5">
-      <label htmlFor="text-content" className="text-xs font-semibold dark:text-gray-200">
+      <label 
+        htmlFor="text-content" 
+        className={cn(
+          "text-xs text-black/90 font-semibold dark:text-gray-300"
+        )}
+      >
         Contenido
       </label>
 

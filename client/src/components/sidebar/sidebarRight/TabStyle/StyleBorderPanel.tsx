@@ -8,6 +8,7 @@ import {
 
 import { LineOptions, options } from "./item";
 import { ShapeData } from "@/types";
+import { cn } from "@/lib/utils";
 
 interface StyleBorderPanelProps {
   isOpen: boolean;
@@ -68,7 +69,12 @@ function StyleLineColor({ shape, lineIsActive, handleNestedPropertyChange }: Sty
           onCheckedChange={(checked) => handleNestedPropertyChange("line", "isActive", !!checked)}
         />
 
-        <label htmlFor="style-line" className="text-xs font-semibold dark:text-gray-200">
+        <label 
+          htmlFor="style-line" 
+          className={cn(
+            "text-xs text-black/90 font-semibold dark:text-gray-300"
+          )}
+        >
           Linea
         </label>
       </div>
