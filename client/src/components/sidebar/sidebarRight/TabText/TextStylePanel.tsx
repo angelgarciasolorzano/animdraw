@@ -28,7 +28,6 @@ function TextStylePanel(props: TextStylePanelProps) {
 
   return (
     <div className="grid gap-1.5">
-      <TextTitle />
       <TextFont shape={shape} handleTextStyleChange={handleTextStyleChange} />
       <TextFontStyle shape={shape} handleTextStyleChange={handleTextStyleChange} />
       <TextAlign shape={shape} handleTextStyleChange={handleTextStyleChange} />
@@ -40,17 +39,13 @@ function TextStylePanel(props: TextStylePanelProps) {
 
 type TextFontProps = TextStylePanelProps;
 
-function TextTitle() {
-  return (
-    <h3 className="text-sm font-semibold text-black/90 dark:text-gray-300">
-      Fuente
-    </h3>
-  )
-};
-
 function TextFont({ shape, handleTextStyleChange }: TextFontProps) {
   return (
     <div className="mb-0.5">
+      <h3 className="text-sm font-semibold text-black/90 dark:text-gray-300">
+        Fuente
+      </h3>
+
       <Select
         value={shape?.textStyle?.fontFamily || "Arial"}
         onValueChange={(value) => handleTextStyleChange("fontFamily", value)}
