@@ -35,13 +35,13 @@ function SidebarRight() {
   }, [shape, updateShapeAttributes]);
 
   return (
-    <div className="w-64 border-l border-gray-300 dark:border-border">
+    <div className="w-[264px] border-l border-gray-300 dark:border-border">
       <Tabs 
         defaultValue="estilo" 
         value={activeTap}
         onValueChange={setActiveTap}
       >
-        <TabsList className="grid grid-cols-2 w-full rounded-none p-0">
+        <TabsList className="w-full rounded-none p-0">
           {sidebarTabOptions.map((option, index) => (
             <TabsTrigger
               key={index}
@@ -51,8 +51,8 @@ function SidebarRight() {
                 "rounded-none h-full border-gray-300 border-t-transparent",
                 "data-[state=active]:shadow-none data-[state=active]:border-b-transparent",
                 "dark:border-border dark:data-[state=inactive]:bg-background/30",
-                "dark:data-[state=active]:bg-background dark:data-[state=active]:border-b-transparent",
-                "dark:data-[state=active]:border-l-transparent dark:data-[state=active]:border-t-transparent",
+                "dark:data-[state=active]:bg-background",
+                "dark:data-[state=active]:border-transparent",
                 "dark:data-[state=inactive]:border-t-transparent",
                 option.className
               )}
@@ -63,15 +63,31 @@ function SidebarRight() {
         </TabsList>
 
         <TabsContent value="estilo">
-          <StyleTab />
+          <div
+            className={cn(
+              "max-h-[calc(100vh-100px)] overflow-auto scrollbar-thin pb-2",
+              "scrollbar-track-transparent scrollbar-thumb-black/40",
+              "dark:scrollbar-thumb-gray-500/50"
+            )}
+          >
+            <StyleTab />
+          </div>
         </TabsContent>
         
         <TabsContent value="texto">
-          <TextTab
-            shape={shape}
-            handleTextStyleChange={handleTextStyleChange}
-            updateShapeAttributes={updateShapeAttributes}
-          />
+          <div
+            className={cn(
+              "max-h-[calc(100vh-100px)] overflow-auto scrollbar-thin pb-2",
+              "scrollbar-track-transparent scrollbar-thumb-black/40",
+              "dark:scrollbar-thumb-gray-500/50"
+            )}
+          >
+            <TextTab
+              shape={shape}
+              handleTextStyleChange={handleTextStyleChange}
+              updateShapeAttributes={updateShapeAttributes}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

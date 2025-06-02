@@ -115,7 +115,8 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
 
       <Input 
         className="w-16" 
-        type="number" 
+        type="number"
+        min={1}
         value={shape?.textStyle?.fontSize || 15}
         onChange={(e) => (
           handleTextStyleChange("fontSize", parseInt(e.target.value))
@@ -141,7 +142,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                   <div>
                     <Toggle
                       key={index}
-                      pressed={shape?.textStyle?.align === value}
+                      pressed={(shape?.textStyle?.align ?? "center") === value}
                       aria-label={label}
                       onPressedChange={(pressed) => (
                         handleTextStyleChange("align", pressed ? value : inactiveValue)
@@ -170,7 +171,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                   <div>
                     <Toggle
                       key={index}
-                      pressed={shape?.textStyle?.verticalAlign === value}
+                      pressed={(shape?.textStyle?.verticalAlign ?? "middle") === value}
                       aria-label={label}
                       onPressedChange={(pressed) => (
                         handleTextStyleChange("verticalAlign", pressed ? value : inactiveValue)
