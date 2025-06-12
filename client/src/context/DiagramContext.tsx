@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useMemo, useRef, useState } from "react";
 import { CanvasSize } from "@/types";
 
 interface DiagramContextType {
@@ -53,33 +53,12 @@ export function DiagramProvider({ children }: DiagramProviderProps) {
   }, []);
 
   const updateCanvasSize = useCallback((newSize: Partial<CanvasSize>) => {
-    setCanvasSize((prev) => ({
-      ...prev,
-      ...newSize,
-      width: Math.max(newSize.width ?? prev.width),
-      height: Math.max( newSize.height ?? prev.height)
-    }))
+    setCanvasSize((prev) => ({ ...prev, ...newSize }));
   }, []);
 
   const resetCanvasSize = useCallback(() => {
     setCanvasSize({ width: 1000, height: 1000 });
   }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (!containerRef.current) return;
-
-      updateCanvasSize({
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight
-      })
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, [updateCanvasSize]);
 
   const value = useMemo(() => ({
     selectedShapeId, selectedAnchorId, containerRef, canvasSize, deselectAll, selectShape,

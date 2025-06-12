@@ -7,7 +7,7 @@ import Grid from "./Grid";
 function Main() {
   const { shapes } = useShape();
   const { connections, allAnchors } = useConnection();
-  const { deselectAll, containerRef, updateCanvasSize, canvasSize } = useDiagram();
+  const { deselectAll, containerRef, canvasSize } = useDiagram();
 
   return (
     <div 
