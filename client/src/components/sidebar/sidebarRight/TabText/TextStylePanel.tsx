@@ -14,7 +14,7 @@ import { ShapeData } from "@/types";
 import { 
   sidebarFontOptions, sidebarFontStyleOptions, 
   sidebarTextAlignOptions, sidebarTextVerticalAlignOptions 
-} from "../sidebarItem";
+} from "./item";
 
 interface TextStylePanelProps {
   shape: ShapeData | null | undefined;
@@ -84,7 +84,7 @@ function TextFontStyle({ shape, handleNestedPropertyChange }: TextFontStyleProps
         <TooltipProvider>
           <div className="flex gap-1">
             {sidebarFontStyleOptions.map((item, index) => {
-              const { prop, activeValue, inactiveValue, label, icon: Icon } = item;
+              const { property, activeValue, inactiveValue, label, icon: Icon } = item;
 
               return (
                 <Tooltip delayDuration={100} key={index}>
@@ -92,10 +92,10 @@ function TextFontStyle({ shape, handleNestedPropertyChange }: TextFontStyleProps
                     <div>
                       <Toggle
                         key={index}
-                        pressed={shape?.textStyle?.[prop] === activeValue}
+                        pressed={shape?.textStyle?.[property] === activeValue}
                         aria-label={label}
                         onPressedChange={(pressed) => (
-                          handleNestedPropertyChange("textStyle", prop, pressed ? activeValue : inactiveValue)
+                          handleNestedPropertyChange("textStyle", property, pressed ? activeValue : inactiveValue)
                         )}
                       >
                         <Icon className="text-gray-700 dark:text-gray-400" />
