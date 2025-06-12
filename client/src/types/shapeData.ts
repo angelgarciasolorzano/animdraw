@@ -19,6 +19,22 @@ export interface ShapeStroke {
   dash?: number[];
 };
 
+export interface ShapeTextStyle {
+  opacity?: number;
+  fontFamily?: string;
+  fontSize?: number;
+  fontWeight?: "normal" | "bold";
+  fontStyle?: "normal" | "italic" | "oblique";
+  textDecoration?: "none" | "underline" | "line-through";
+  color?: string;
+  align?: "left" | "center" | "right";
+  verticalAlign?: "top" | "middle" | "bottom";
+  hasShadow?: boolean;
+  shadowColor?: string;
+  shadowBlur?: number;
+  shadowOpacity?: number;
+};
+
 export interface ShapeData {
   id: string;
   type: "rect" | "ellipse";
@@ -28,27 +44,11 @@ export interface ShapeData {
   height: number;
   line?: ShapeStroke;
   fill: string;
-  stroke: string;
-  strokeWidth: number;
-  text: string;
+  text?: string;
   opacity?: number;
   radius?: boolean;
   shadow?: ShapeShadow;
-  textStyle: {
-    opacity?: number;
-    fontFamily?: string;
-    fontSize?: number;
-    fontWeight?: "normal" | "bold";
-    fontStyle?: "normal" | "italic" | "oblique";
-    textDecoration?: "none" | "underline" | "line-through";
-    color?: string;
-    align?: "left" | "center" | "right";
-    verticalAlign?: "top" | "middle" | "bottom";
-    hasShadow?: boolean;
-    shadowColor?: string;
-    shadowBlur?: number;
-    shadowOpacity?: number;
-  };
+  textStyle?: ShapeTextStyle;
   rotation?: number;
   anchors: AnchorPoint[];
 };

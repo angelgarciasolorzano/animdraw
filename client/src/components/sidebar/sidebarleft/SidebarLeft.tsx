@@ -1,25 +1,39 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
-import { useShape, useDiagram } from "@/hooks";
-import { sidebarItem, IconItem } from "./sidebarItem";
 import { cn } from "@/lib/utils";
+import { ShapeData } from "@/types";
+import { useShape, useDiagram, useTheme } from "@/hooks";
+
+import { sidebarItem, IconItem } from "./sidebarItem";
+
+type NewShape = Omit<ShapeData, "id" | "anchors">;
 
 function SidebarLeft() {
   const { addShape } = useShape();
   const { selectShape } = useDiagram();
+  const { theme } = useTheme();
 
-  const handleAddShape = (type:"rect" | "ellipse" ,x: number, y: number, width: number, height: number) => {
-    const newShape = {
+  const isDark = theme === "dark";
+
+  const handleAddShape = (
+    type: ShapeData["type"],
+    x: number, y: number, 
+    width: number, height: number
+  ) => {
+    const newShape: NewShape = {
       type,
       x: x,
       y: y,
       width: width,
       height: height,
-      fill: "#e5e7eb",
-      stroke: "#6b7280",
-      strokeWidth: 2,
-      text: "Figura 1",
+      fill: isDark ? "#0D0D0D" : "#e5e7eb",
+      textStyle: {
+        color: isDark ? "#ffffff" : "#000000"
+      },
+      line: {
+        stroke: isDark ? "#ffffff" : "#000000"
+      }
     };
 
     const newId = addShape(newShape);
@@ -42,10 +56,14 @@ function SidebarLeft() {
 };
 
 interface SidebarSectionProps {
-  onAddShape: (type: "rect" | "ellipse",x: number, y: number, width: number, height: number) => void;
   title: string;
   value: string;
   icon: IconItem[];
+  onAddShape: (
+    type: ShapeData["type"], 
+    x: number, y: number, 
+    width: number, height: number
+  ) => void;
 };
 
 function SidebarSection({ title, value, icon, onAddShape }: SidebarSectionProps) {

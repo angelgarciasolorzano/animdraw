@@ -15,6 +15,7 @@ import {
   sidebarFontOptions, sidebarFontStyleOptions, 
   sidebarTextAlignOptions, sidebarTextVerticalAlignOptions 
 } from "./item";
+import { useTheme } from "@/hooks";
 
 interface TextStylePanelProps {
   shape: ShapeData | null | undefined;
@@ -197,6 +198,18 @@ function TextAlign({ shape, handleNestedPropertyChange }: TextAlignProps) {
 type TextColorProps = TextStylePanelProps;
 
 function TextColor({ shape, handleNestedPropertyChange }: TextColorProps) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  const defaultDark = "#ffffff";
+  const defaultLight = "#000000";
+  const currentColor = shape?.textStyle?.color;
+
+  const value = (isDark
+    ? currentColor === defaultLight || !currentColor ? defaultDark : currentColor
+    : currentColor === defaultDark || !currentColor ? defaultLight : currentColor
+  );
+
   return (
     <div className="flex justify-between mt-2 items-center">
       <label 
@@ -212,7 +225,7 @@ function TextColor({ shape, handleNestedPropertyChange }: TextColorProps) {
         id="text-color"
         type="color" 
         className="w-24 h-8"
-        value={shape?.textStyle?.color || "#000000"}
+        value={value}
         onChange={(e) => handleNestedPropertyChange("textStyle", "color", e.target.value)}
       />
     </div>

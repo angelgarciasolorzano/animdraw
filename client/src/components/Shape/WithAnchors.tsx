@@ -1,6 +1,6 @@
 import { Group, Rect, Ellipse, Text } from "react-konva";
 
-import { useShape, useDiagram, useConnection, useShapeInteraction } from "@/hooks";
+import { useShape, useDiagram, useConnection, useShapeInteraction, useTheme } from "@/hooks";
 import { ShapeData } from "@/types";
 
 import AnchorPoint from "./AnchorPoint";
@@ -11,8 +11,25 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
   const { selectShape, selectAnchor, isShapeSelected, isAnchorSelected, deselectAll } = useDiagram();
   const { updateShapeAttributes } = useShape();
   const { allAnchors, addConnection } = useConnection();
+  const {  theme} = useTheme();
 
   const isSelected = isShapeSelected(shape.id);
+  const isDark = theme === "dark";
+
+  const shapeFill = (isDark 
+    ? shape.fill === "#e5e7eb" ? "#0D0D0D" : shape.fill 
+    : shape.fill === "#0D0D0D" ? "#e5e7eb" : shape.fill
+  );
+
+  const shapeStroke = (isDark 
+    ? shape.line?.stroke === "#000000" ? "#ffffff" : shape.line?.stroke 
+    : shape.line?.stroke === "#ffffff" ? "#000000" : shape.line?.stroke
+  );
+
+  const shapeText = (isDark 
+    ? shape.textStyle?.color === "#000000" ? "#ffffff" : shape.textStyle?.color 
+    : shape.textStyle?.color === "#ffffff" ? "#000000" : shape.textStyle?.color
+  );
 
   const { isHovered, shapeGroupRef, updateHovered, handleDragEnd, handleDragMove } = useShapeInteraction({
     shape, isSelected, onDragEnd: (newAttributes) => updateShapeAttributes(shape.id, newAttributes)
@@ -78,11 +95,11 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
           <Rect
             width={shape.width}
             height={shape.height}
-            fill={shape.fill}
+            fill={shapeFill}
             opacity={shape.opacity ?? 1}
             cornerRadius={shape.radius ? 10 : undefined }
             dash={shape.line?.dash}
-            stroke={shape.line?.stroke || "#000000"}
+            stroke={shapeStroke}
             strokeWidth={shape.line?.strokeWidth || 1}
             strokeEnabled={shape.line?.isActive ?? true}
             shadowColor={shape.shadow?.color ? shape.shadow?.color : undefined}
@@ -97,10 +114,10 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
             radiusY={shape.height / 2}
             x={shape.width / 2}
             y={shape.height / 2}
-            fill={shape.fill}
+            fill={shapeFill}
             opacity={shape.opacity ?? 1}
             dash={shape.line?.dash}
-            stroke={shape.line?.stroke || "#000000"}
+            stroke={shapeStroke}
             strokeWidth={shape.line?.strokeWidth || 1}
             strokeEnabled={shape.line?.isActive ?? true}
             shadowColor={shape.shadow?.color ? shape.shadow?.color : undefined}
@@ -112,7 +129,6 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
         {/* Texto de la figura */}
         <Text
           x={8}
-          //y={shape.height / 2 - 10}
           y={0}
           padding={6}
           wrap="word"
@@ -130,7 +146,7 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
               shape.textStyle?.fontWeight === 'bold' ? 'bold' : ''
             ].filter(Boolean).join(' ') || 'normal'
           }
-          fill={shape.textStyle?.color || '#000000'}
+          fill={shapeText}
           textDecoration={shape.textStyle?.textDecoration === 'underline' ? 'underline' : ''}
           shadowColor={shape.textStyle?.shadowColor ? shape.textStyle?.shadowColor : undefined}
           shadowBlur={shape.textStyle?.hasShadow ? shape.textStyle?.shadowBlur ?? 3 : 0}
