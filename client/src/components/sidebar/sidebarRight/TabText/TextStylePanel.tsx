@@ -7,6 +7,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
+
 import { cn } from "@/lib/utils";
 import { ShapeData } from "@/types";
 
@@ -17,29 +18,33 @@ import {
 
 interface TextStylePanelProps {
   shape: ShapeData | null | undefined;
-  handleTextStyleChange: (
-    key: keyof ShapeData["textStyle"], 
-    value: string | number | boolean
+  handleNestedPropertyChange: <
+    T extends keyof Pick<ShapeData, "textStyle">,
+    k extends keyof NonNullable<ShapeData[T]>
+  >(
+    property: T, 
+    key: k, 
+    value: NonNullable<ShapeData[T]>[k]
   ) => void;
 };
 
 function TextStylePanel(props: TextStylePanelProps) {
-  const { shape, handleTextStyleChange } = props;
+  const { shape, handleNestedPropertyChange } = props;
 
   return (
     <div className="grid gap-1.5">
-      <TextFont shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextFontStyle shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextAlign shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextColor shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextOpacity shape={shape} handleTextStyleChange={handleTextStyleChange} />
+      <TextFont shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextFontStyle shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextAlign shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextColor shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextOpacity shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
     </div>
   )
 };
 
 type TextFontProps = TextStylePanelProps;
 
-function TextFont({ shape, handleTextStyleChange }: TextFontProps) {
+function TextFont({ shape, handleNestedPropertyChange }: TextFontProps) {
   return (
     <div className="mb-0.5">
       <h3 className="text-sm font-semibold text-black/90 dark:text-gray-300">
@@ -48,7 +53,7 @@ function TextFont({ shape, handleTextStyleChange }: TextFontProps) {
 
       <Select
         value={shape?.textStyle?.fontFamily || "Arial"}
-        onValueChange={(value) => handleTextStyleChange("fontFamily", value)}
+        onValueChange={(value) => handleNestedPropertyChange("textStyle", "fontFamily", value)}
       >
         <SelectTrigger className="w-full mt-1.5">
           <SelectValue placeholder="Arial" />
@@ -72,7 +77,7 @@ function TextFont({ shape, handleTextStyleChange }: TextFontProps) {
 
 type TextFontStyleProps = TextStylePanelProps;
 
-function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
+function TextFontStyle({ shape, handleNestedPropertyChange }: TextFontStyleProps) {
   return (
     <div className="flex gap-3 justify-between">
       <div className="flex gap-1">
@@ -90,7 +95,7 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
                         pressed={shape?.textStyle?.[prop] === activeValue}
                         aria-label={label}
                         onPressedChange={(pressed) => (
-                          handleTextStyleChange(prop, pressed ? activeValue : inactiveValue)
+                          handleNestedPropertyChange("textStyle", prop, pressed ? activeValue : inactiveValue)
                         )}
                       >
                         <Icon className="text-gray-700 dark:text-gray-400" />
@@ -114,7 +119,7 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
         min={1}
         value={shape?.textStyle?.fontSize || 15}
         onChange={(e) => (
-          handleTextStyleChange("fontSize", parseInt(e.target.value))
+          handleNestedPropertyChange("textStyle", "fontSize", parseInt(e.target.value))
         )}
       />
     </div>
@@ -123,7 +128,7 @@ function TextFontStyle({ shape, handleTextStyleChange }: TextFontStyleProps) {
 
 type TextAlignProps = TextStylePanelProps;
 
-function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
+function TextAlign({ shape, handleNestedPropertyChange }: TextAlignProps) {
   return ( 
     <div className="flex justify-between">
       <TooltipProvider>
@@ -140,7 +145,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                       pressed={(shape?.textStyle?.align ?? "center") === value}
                       aria-label={label}
                       onPressedChange={(pressed) => (
-                        handleTextStyleChange("align", pressed ? value : inactiveValue)
+                        handleNestedPropertyChange("textStyle", "align", pressed ? value : inactiveValue)
                       )}
                     >
                       <Icon className="text-gray-700 dark:text-gray-400" />
@@ -169,7 +174,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
                       pressed={(shape?.textStyle?.verticalAlign ?? "middle") === value}
                       aria-label={label}
                       onPressedChange={(pressed) => (
-                        handleTextStyleChange("verticalAlign", pressed ? value : inactiveValue)
+                        handleNestedPropertyChange("textStyle", "verticalAlign", pressed ? value : inactiveValue)
                       )}
                     >
                       <Icon className="text-gray-700 dark:text-gray-400" />
@@ -191,7 +196,7 @@ function TextAlign({ shape, handleTextStyleChange }: TextAlignProps) {
 
 type TextColorProps = TextStylePanelProps;
 
-function TextColor({ shape, handleTextStyleChange }: TextColorProps) {
+function TextColor({ shape, handleNestedPropertyChange }: TextColorProps) {
   return (
     <div className="flex justify-between mt-2 items-center">
       <label 
@@ -208,7 +213,7 @@ function TextColor({ shape, handleTextStyleChange }: TextColorProps) {
         type="color" 
         className="w-24 h-8"
         value={shape?.textStyle?.color || "#000000"}
-        onChange={(e) => handleTextStyleChange("color", e.target.value)}
+        onChange={(e) => handleNestedPropertyChange("textStyle", "color", e.target.value)}
       />
     </div>
   )
@@ -216,7 +221,7 @@ function TextColor({ shape, handleTextStyleChange }: TextColorProps) {
 
 type TextOpacityProps = TextStylePanelProps;
 
-function TextOpacity({ shape, handleTextStyleChange }: TextOpacityProps) {
+function TextOpacity({ shape, handleNestedPropertyChange }: TextOpacityProps) {
   return (
     <div className="flex items-center mt-2 justify-between">
       <label 
@@ -236,7 +241,7 @@ function TextOpacity({ shape, handleTextStyleChange }: TextOpacityProps) {
         min={0}
         max={1}
         value={shape?.textStyle?.opacity ?? 1}
-        onChange={(e) => handleTextStyleChange("opacity", parseFloat(e.target.value))}
+        onChange={(e) => handleNestedPropertyChange("textStyle", "opacity", parseFloat(e.target.value))}
       />
     </div>
   )

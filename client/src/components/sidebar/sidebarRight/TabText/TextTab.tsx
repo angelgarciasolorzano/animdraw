@@ -6,18 +6,30 @@ import TextShadowPanel from "./TextShadowPanel";
 
 interface TextTabProps {
   shape: ShapeData | null | undefined;
-  handleTextStyleChange: (key: keyof ShapeData["textStyle"], value: string | number | boolean) => void;
-  updateShapeAttributes: (shapeId: ShapeData["id"], attributes: Partial<ShapeData>) => void;
+
+  handleSimplePropertyChange: <T extends keyof Omit<ShapeData, "shadow" | "textStyle" | "line">>(
+    property: T,
+    value: ShapeData[T]
+  ) => void;
+
+  handleNestedPropertyChange: <
+    T extends keyof Pick<ShapeData, "textStyle" | "shadow" | "line">,
+    k extends keyof NonNullable<ShapeData[T]>
+  >(
+    property: T, 
+    key: k, 
+    value: NonNullable<ShapeData[T]>[k]
+  ) => void;
 };
 
 function TextTab(props: TextTabProps) {
-  const { shape, handleTextStyleChange, updateShapeAttributes } = props;
+  const { shape, handleSimplePropertyChange, handleNestedPropertyChange } = props;
 
   return (
     <div className="flex flex-col gap-3 mx-2.5">
-      <TextStylePanel shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextContentPanel shape={shape} updateShapeAttributes={updateShapeAttributes} />
-      <TextShadowPanel shape={shape} handleTextStyleChange={handleTextStyleChange} />
+      <TextStylePanel shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextContentPanel shape={shape} handleSimplePropertyChange={handleSimplePropertyChange} />
+      <TextShadowPanel shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
     </div>
   )
 };

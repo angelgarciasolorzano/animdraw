@@ -3,3 +3,4 @@ export { default as useDiagram } from "./useDiagram";
 export { default as useShape } from "./useShape";
 export { default as useShapeInteraction } from "./useShapeInteraction";
 export { default as useTheme } from "./useTheme";
+export { default as useShapePropertyUpdater } from "./useShapePropertyUpdater";

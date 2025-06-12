@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { cn } from "@/lib/utils";
-import { useDiagram, useShape } from "@/hooks";
-import { ShapeData } from "@/types";
+import { useDiagram, useShape, useShapePropertyUpdater } from "@/hooks";
 
 import { sidebarTabOptions} from "./sidebarItem";
-import { getSidebarTabsContent } from "./SidebarTabsContent";
+import getSidebarTabsContent from "./SidebarTabsContent";
 
 function SidebarRight() {
   const { selectedShapeId } = useDiagram();
   const { getShapeById, updateShapeAttributes } = useShape();
+
   const [activeTap, setActiveTap] = useState<string>("estilo");
 
   useEffect(() => {
@@ -22,19 +22,12 @@ function SidebarRight() {
     return selectedShapeId ? getShapeById(selectedShapeId) : null;
   }, [selectedShapeId, getShapeById]);
 
-  const handleTextStyleChange = useCallback((
-    key: keyof ShapeData["textStyle"], 
-    value: string | number | boolean
-  ) => {
-    if (!shape) return null;
-
-    updateShapeAttributes(shape.id, {
-      textStyle: { ...shape.textStyle, [key]: value }
-    })
-  }, [shape, updateShapeAttributes]);
+  const { handleSimplePropertyChange, handleNestedPropertyChange } = useShapePropertyUpdater({
+    shape, updateShapeAttributes
+  });
 
   const sidebarTabsContext = getSidebarTabsContent({
-    shape, handleTextStyleChange, updateShapeAttributes
+    shape, handleSimplePropertyChange, handleNestedPropertyChange
   });
 
   return (

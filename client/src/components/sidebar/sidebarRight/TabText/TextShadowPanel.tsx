@@ -6,34 +6,38 @@ import { ShapeData } from "@/types";
 
 interface TextShadowPanelProps {
   shape: ShapeData | null | undefined;
-  handleTextStyleChange: (
-    key: keyof ShapeData["textStyle"], 
-    value: string | number | boolean
+  handleNestedPropertyChange: <
+    T extends keyof Pick<ShapeData, "textStyle">,
+    k extends keyof NonNullable<ShapeData[T]>
+  >(
+    property: T, 
+    key: k, 
+    value: NonNullable<ShapeData[T]>[k]
   ) => void;
 };
 
 function TextShadowPanel(props: TextShadowPanelProps) {
-  const { shape, handleTextStyleChange } = props;
+  const { shape, handleNestedPropertyChange } = props;
 
   return (
     <div className="flex flex-col gap-2.5">
-      <TextShadow shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextBlurShadow shape={shape} handleTextStyleChange={handleTextStyleChange} />
-      <TextOpacityShadow shape={shape} handleTextStyleChange={handleTextStyleChange} />
+      <TextShadow shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextBlurShadow shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
+      <TextOpacityShadow shape={shape} handleNestedPropertyChange={handleNestedPropertyChange} />
     </div>
   )
 };
 
 type TextShadowProps = TextShadowPanelProps;
 
-function TextShadow({ shape, handleTextStyleChange }: TextShadowProps) {
+function TextShadow({ shape, handleNestedPropertyChange }: TextShadowProps) {
   return (
     <div className="flex justify-between">
       <div className="flex items-center space-x-2">
         <Checkbox 
           id="shadow" 
           checked={shape?.textStyle?.hasShadow || false}
-          onCheckedChange={(checked) => handleTextStyleChange("hasShadow", checked)}
+          onCheckedChange={(checked) => handleNestedPropertyChange("textStyle", "hasShadow", !!checked)}
         />
 
         <label 
@@ -51,7 +55,7 @@ function TextShadow({ shape, handleTextStyleChange }: TextShadowProps) {
         className="w-24 h-8"
         value={shape?.textStyle?.shadowColor || "#000000"}
         disabled={!shape?.textStyle?.hasShadow}
-        onChange={(e) => handleTextStyleChange("shadowColor", e.target.value)}
+        onChange={(e) => handleNestedPropertyChange("textStyle", "shadowColor", e.target.value)}
       />
     </div>
   )
@@ -59,7 +63,7 @@ function TextShadow({ shape, handleTextStyleChange }: TextShadowProps) {
 
 type TextBlurShadowProps = TextShadowPanelProps;
 
-function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
+function TextBlurShadow({ shape, handleNestedPropertyChange }: TextBlurShadowProps) {
   return (
     <div className="flex items-center justify-between">
       <label 
@@ -79,7 +83,7 @@ function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
         disabled={!shape?.textStyle?.hasShadow}
         min={0}
         value={shape?.textStyle?.shadowBlur ?? 3}
-        onChange={(e) => handleTextStyleChange("shadowBlur", parseInt(e.target.value))}
+        onChange={(e) => handleNestedPropertyChange("textStyle", "shadowBlur", parseInt(e.target.value))}
       />
     </div>
   )
@@ -87,7 +91,7 @@ function TextBlurShadow({ shape, handleTextStyleChange }: TextBlurShadowProps) {
 
 type TextOpacityShadowProps = TextShadowPanelProps;
 
-function TextOpacityShadow({ shape, handleTextStyleChange }: TextOpacityShadowProps) {
+function TextOpacityShadow({ shape, handleNestedPropertyChange }: TextOpacityShadowProps) {
   return (
     <div className="flex items-center justify-between">
       <label 
@@ -109,7 +113,7 @@ function TextOpacityShadow({ shape, handleTextStyleChange }: TextOpacityShadowPr
         max={1}
         disabled={!shape?.textStyle?.hasShadow}
         value={shape?.textStyle?.shadowOpacity ?? 1}
-        onChange={(e) => handleTextStyleChange("shadowOpacity", parseFloat(e.target.value))}
+        onChange={(e) => handleNestedPropertyChange("textStyle", "shadowOpacity", parseFloat(e.target.value))}
       />
     </div>
   )

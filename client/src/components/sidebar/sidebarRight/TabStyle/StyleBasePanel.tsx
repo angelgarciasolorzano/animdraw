@@ -12,10 +12,12 @@ import { carouselItems, ColorsItems } from "./item";
 
 interface StyleBasePanelProps {
   shape: ShapeData | null | undefined;
-  handleSimplePropertyChange: <T extends keyof Omit<ShapeData, 'shadow' | 'textStyle'>>(
+
+  handleSimplePropertyChange: <T extends keyof Omit<ShapeData, "shadow" | "textStyle" | "line">>(
     property: T,
     value: ShapeData[T]
   ) => void;
+
   handleNestedPropertyChange: <
     T extends keyof Pick<ShapeData, "line">,
     k extends keyof NonNullable<ShapeData[T]>
