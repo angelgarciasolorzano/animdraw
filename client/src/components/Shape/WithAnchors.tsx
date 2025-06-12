@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Group, Rect, Ellipse, Text } from "react-konva";
 
 import { useShape, useDiagram, useConnection, useShapeInteraction } from "@/hooks";
@@ -11,13 +10,9 @@ interface ShapeWithAnchorsProps { shape: ShapeData; };
 function WithAnchors({ shape }: ShapeWithAnchorsProps) {
   const { selectShape, selectAnchor, isShapeSelected, isAnchorSelected, deselectAll } = useDiagram();
   const { updateShapeAttributes } = useShape();
-  const { allAnchors, addConnection, getConnectionByShape } = useConnection();
+  const { allAnchors, addConnection } = useConnection();
 
   const isSelected = isShapeSelected(shape.id);
-
-  const shapeConnections = useMemo(() => (
-    getConnectionByShape(shape.id)
-  ), [shape.id, getConnectionByShape]);
 
   const { isHovered, shapeGroupRef, updateHovered, handleDragEnd, handleDragMove } = useShapeInteraction({
     shape, isSelected, onDragEnd: (newAttributes) => updateShapeAttributes(shape.id, newAttributes)
@@ -62,13 +57,6 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
     isSelected || isHovered || shape.anchors.some(a => isAnchorSelected(a.id))
   );
 
-  const shapeStyle = useMemo(() => ({
-    //stroke: isSelected ? "#3b82f6" : shape.stroke,
-    //strokeWidth: isSelected ? 3 : shape.strokeWidth,
-    //shadowColor: shapeConnections.length > 0 ? "#3b82f6" : undefined,
-    //shadowBlur: shapeConnections.length > 0 ? 10 : 0
-  }), [isSelected, shape.stroke, shape.strokeWidth, shapeConnections]);
-
   return (
     <Group>
       <Group
@@ -100,7 +88,6 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
             shadowColor={shape.shadow?.color ? shape.shadow?.color : undefined}
             shadowBlur={shape.shadow?.isActive ? shape.shadow?.blur ?? 3 : 0}
             shadowOpacity={shape.shadow?.isActive ? shape.shadow?.opacity ?? 1 : 0}
-            {...shapeStyle}
           />
         )}
 
@@ -111,7 +98,14 @@ function WithAnchors({ shape }: ShapeWithAnchorsProps) {
             x={shape.width / 2}
             y={shape.height / 2}
             fill={shape.fill}
-            {...shapeStyle}
+            opacity={shape.opacity ?? 1}
+            dash={shape.line?.dash}
+            stroke={shape.line?.stroke || "#000000"}
+            strokeWidth={shape.line?.strokeWidth || 1}
+            strokeEnabled={shape.line?.isActive ?? true}
+            shadowColor={shape.shadow?.color ? shape.shadow?.color : undefined}
+            shadowBlur={shape.shadow?.isActive ? shape.shadow?.blur ?? 3 : 0}
+            shadowOpacity={shape.shadow?.isActive ? shape.shadow?.opacity ?? 1 : 0}
           />
         )}
 

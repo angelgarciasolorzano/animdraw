@@ -114,18 +114,18 @@ export const options: LineOptions[] = [
     id: "continuous",
     name: "Continua",
     value: [0, 0], 
-    className: "w-full h-1 bg-black"
+    className: "w-full h-1 bg-black dark:bg-white"
   },
   { 
     id: "dashed", 
     name: "Discontinua",
     value: [10, 25],
-    className: "w-full h-1 border-2 border-dashed bg-black"
+    className: "w-full h-1 border-2 border-dashed border-black dark:border-white"
   },
   { 
     id: "dotted", 
     name: "Punteada",
     value: [10, 10],
-    className: "w-full h-1 border-2 border-dotted bg-black"
+    className: "w-full h-1 border-2 border-dotted border-black dark:border-white"
   },
 ];

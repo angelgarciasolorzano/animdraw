@@ -1,5 +1,4 @@
 import { IconType } from "react-icons";
-import { IoTriangleOutline } from "react-icons/io5";
 import { MdOutlineCircle, MdOutlineRectangle } from "react-icons/md";
 
 export interface IconItem {
@@ -42,15 +41,6 @@ export const sidebarItem: ItemsSections[] = [
         width: 150,
         height: 100
       },
-      {
-        icon: IoTriangleOutline,
-        label: "Triángulo",
-        type: "ellipse",
-        x: 300,
-        y: 200,
-        width: 150,
-        height: 100
-      }
     ]
   }
 ];

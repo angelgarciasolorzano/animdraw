@@ -33,8 +33,8 @@ function SelectTrigger({ isOpen, onToggle, className, disabled, children, ...pro
   return (
     <button
       className={cn(
-        "w-full flex items-center justify-between gap-3 px-3 border rounded-md py-2 cursor-pointer",
-        "shadow-xs border-gray-300",
+        "w-full flex items-center justify-between gap-3 px-3 py-2 border border-border",
+        "rounded-md cursor-pointer shadow-xs dark:bg-[#161616]",
         disabled && "cursor-default pointer-events-none opacity-50",
         className
       )}
@@ -79,8 +79,8 @@ function SelectContent({ isOpen, children, className }: SelectContentProps) {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.1 }}
           className={cn(
-            "w-full absolute z-10 mt-1 bg-white border rounded-md shadow-md pb-1.5",
-            "border-gray-300",
+            "w-full absolute z-10 mt-1 bg-white border border-border rounded-md shadow-md pb-1.5",
+            "dark:bg-[#161616]",
             className
           )}
         >
@@ -113,7 +113,7 @@ function SelectLabel({ children, className, ...props }: SelectLabelProps) {
   return (
     <span
       className={cn(
-        "block px-3 py-1 pb-1 text-xs text-gray-500", 
+        "block px-3 py-1 pb-1 text-xs text-muted-foreground", 
         className
       )}
       {...props}
@@ -133,6 +133,7 @@ function SelectItem({ value, selected, children, className, ...props }: SelectIt
     <div
       className={cn(
         "relative py-2 px-2 pr-9 cursor-pointer rounded-md hover:bg-gray-100 mx-1",
+        "dark:hover:bg-accent",
         className
       )}
       data-value={value}
