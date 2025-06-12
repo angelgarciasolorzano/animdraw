@@ -1,9 +1,10 @@
 import React from "react";
 
-import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "motion/react";
 import { IoCheckmark } from "react-icons/io5";
 import { ChevronDownIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 type SelectProps = React.ComponentProps<"div"> & {
   disabled?: boolean;
